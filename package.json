@@ -14,10 +14,14 @@
     "test": "echo 1"
   },
   "dependencies": {
+    "@prisma/nuxt": "^0.0.35",
     "element-plus": "^2.4.4",
     "nuxt": "^3.13.0",
+    "radash": "^12.1.0",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-request": "^2.0.4",
+    "vue-router": "latest",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
@@ -25,8 +29,10 @@
     "@commitlint/prompt-cli": "19.4.1",
     "@commitlint/types": "^19.4.0",
     "@element-plus/nuxt": "1.0.7",
+    "@prisma/client": "5.21.1",
     "husky": "^9.1.6",
-    "less": "^4.2.0"
+    "less": "^4.2.0",
+    "prisma": "5.21.1"
   },
   "pnpm": {
     "overrides": {
