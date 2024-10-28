@@ -7,11 +7,27 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "prepare": "husky",
+    "preinstall": "npx only-allow pnpm",
+    "commit": "commit",
+    "test": "echo 1"
   },
   "dependencies": {
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.4.0",
+    "@commitlint/prompt-cli": "19.4.1",
+    "@commitlint/types": "^19.4.0",
+    "husky": "^9.1.6"
+  },
+  "pnpm": {
+    "overrides": {
+      "conventional-changelog-conventionalcommits": "^8.0.0"
+    }
   }
 }
