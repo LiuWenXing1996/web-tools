@@ -16,13 +16,13 @@ export default defineEventHandler(async (event) => {
     port: 465,
     secure: true,
     auth: {
-      user: "web_tools2024@163.com",
-      pass: "NAdBMDQYPuPkGMCE",
+      user: "",
+      pass: "",
     },
   });
 
   const info = await transporter.sendMail({
-    from: '"Web Tools" web_tools2024@163.com', // sender address
+    from: '"Web Tools" ', // sender address
     to: data.email,
     subject: "Hello ✔",
     text: "Hello worldsss?",
