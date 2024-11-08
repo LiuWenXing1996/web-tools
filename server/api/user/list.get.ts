@@ -15,6 +15,15 @@ export default defineEventHandler(async (event) => {
   const list = await prisma.user.findMany({
     skip: skip,
     take: data.pageSize,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      isAdmin: true,
+      isSuper: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
   return list;
 });
