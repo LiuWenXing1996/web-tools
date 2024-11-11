@@ -27,10 +27,17 @@ export const useEditTabs = () => {
       currentTabName: newOpenedTabNames[0],
     };
   };
+  const activeTab = (name: string) => {
+    store.value = {
+      ...store.value,
+      currentTabName: name,
+    };
+  };
   return {
     openedTabNames,
     currentTabName,
     addTab,
     removeTab,
+    activeTab,
   };
 };

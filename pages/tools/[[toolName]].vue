@@ -11,33 +11,71 @@
                     <user-avatar />
                 </div>
             </div>
-            <div class="h-[calc(100%-50px)] flex">
-                <div class="flex flex-col h-full w-[64px] items-center border-r py-[10px]">
-                    <!-- TODO:继续实现工具列表 -->
-                    <div v-for="t in user.setting.value?.sideBar?.tools"
-                        class="flex items-center justify-center w-full h-[44px] text-[30px] cursor-pointer hover:text-primary">
-                        <tool-icon :name="t" />
-                    </div>
+            <n-layout has-sider class="h-full">
+                <n-layout-sider bordered :width="64">
+                    <n-menu :collapsed="true" :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"
+                        @update:value="(v) => {
+                            editTabs.addTab(v)
+                        }" />
+                </n-layout-sider>
+                <div class="h-full w-[calc(100%-64px)]">
+                    <n-tabs :value="editTabs.currentTabName.value" @update:value="(v) => {
+                        editTabs.activeTab(v)
+                    }" type="card" animated closable @close="(key) => {
+                        editTabs.removeTab(key);
+                    }" :style="{
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: ' column',
+                    }" :pane-style="{
+                        flexGrow: 1,
+                        padding: '20px',
+                        overflow: 'auto',
+                    }">
+                        <n-tab-pane :name="item.name" :tab="item.tool?.title || `工具 ${item.name} 未实现`" v-for="item in toolTabs"
+                            display-directive="show">
+                            <template v-if="item.tool">
+                                <component :is="item.tool.content"></component>
+                            </template>
+                            <template v-else>
+                                {{ `工具 ${item.name} 未实现` }}
+                            </template>
+                        </n-tab-pane>
+                    </n-tabs>
                 </div>
-                <div class="flex w-[calc(100%-64px)]">
-                    <el-tabs v-model="editTabs.currentTabName.value" type="card" class="w-full custom-el-tabs"
-                        @tab-remove="(k: any) => editTabs.removeTab(k)">
-                        <tool-tab-pane v-for="item in editTabs.openedTabNames.value" :key="item" :name="item" />
-                    </el-tabs>
-                </div>
-            </div>
+            </n-layout>
         </div>
     </div>
 </template>
 <script setup lang="ts">
+import type { MenuOption } from 'naive-ui';
 import { first } from 'radash';
 const route = useRoute();
 const user = useCurrentUser();
 const toolName = computed(
     () => first(arraify(route.params.toolName)) || undefined
 );
+// TODO:继续讲 element 转换到 naive ui 
 
 const editTabs = useEditTabs()
+const toolTabs = computed(() => {
+    return editTabs.openedTabNames.value.map(toolName => {
+        return {
+            name: toolName,
+            tool: findTool(toolName),
+        }
+    })
+})
+const menuOptions: ComputedRef<MenuOption[]> = computed(() => {
+    const tools = filterNullable((user.setting.value?.sideBar?.tools || []).map(e => findTool(e)));
+    return tools.map(tool => {
+        return {
+            label: tool.title,
+            key: tool.name,
+            icon: tool.icon
+        }
+    })
+})
 const goToHome = async () => {
     return await navigateTo("/", {
         external: true,

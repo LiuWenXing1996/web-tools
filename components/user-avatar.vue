@@ -1,40 +1,119 @@
 <template>
-  <div>
-    <el-dropdown trigger="click">
-      <icon size="22" name="ep:user" class="hover:text-primary" />
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item v-if="currentUser.current.value" @click="logoutDialogVisible = true">退出登录</el-dropdown-item>
-          <el-dropdown-item v-else @click="loginDialogVisible = true">登录</el-dropdown-item>
-          <el-dropdown-item @click="editTabs.addTab(ToolName['super-manager'])">超管后台</el-dropdown-item>
-          <el-dropdown-item @click="editTabs.addTab(ToolName['admin-manager'])">管理员后台</el-dropdown-item>
-          <el-dropdown-item @click="editTabs.addTab(ToolName['user-setting'])">用户设置</el-dropdown-item>
-        </el-dropdown-menu>
+  <n-dropdown :options="options" @select="handleSelect">
+    <div
+      class="flex items-center justify-center text-[20px] w-[34px] h-[34px] rounded-full border border-slate-200 cursor-pointer"
+      v-if="user.current.value">
+      {{ user.current.value?.name?.[0] }}
+    </div>
+    <n-button circle v-else>
+      <template #icon>
+        <svg-icon name="ep:user" />
       </template>
-    </el-dropdown>
-    <el-dialog v-model="logoutDialogVisible" title="退出登录" width="500" destroy-on-close>
-      <span>确定退出登录吗？</span>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="logoutDialogVisible = false">不确定</el-button>
-          <el-button type="primary" :loading="logoutRequest.loading.value" @click="logoutRequest.refreshAsync()">
-            确定
-          </el-button>
-        </div>
-      </template>
-    </el-dialog>
-    <el-dialog v-model="loginDialogVisible" title="登录" width="500" destroy-on-close>
-      <user-login v-if="isLogin" @toggle-register="isLogin = false" />
-      <user-register v-else @toggle-login="isLogin = true" />
-    </el-dialog>
-  </div>
+    </n-button>
+  </n-dropdown>
+  <DefineTemplate>
+    <div class="px-[12px] py-[10px]" v-if="user.current.value">
+      {{ `${user.current.value.name}(${user.current.value.email})` }}
+    </div>
+  </DefineTemplate>
 </template>
 <script setup lang="ts">
-const currentUser = useCurrentUser();
-const logoutDialogVisible = ref(false)
-const loginDialogVisible = ref(false)
-const isLogin = ref(true)
+import { type DropdownOption } from "naive-ui";
+import { SvgIcon, UserLogin } from "#components";
+
+const user = useCurrentUser();
 const routeHelper = useRouteHelper();
+const editTabs = useEditTabs()
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
+const dialog = useDialog();
+const options = computed<DropdownOption[]>(() => {
+  const list: DropdownOption[] = [];
+  if (user.current.value) {
+    list.push(
+      ...[
+        {
+          key: "user-info",
+          type: "render",
+          render: () => h(ReuseTemplate),
+        },
+        {
+          label: "用户设置",
+          key: "user-setting",
+          icon: () =>
+            h(SvgIcon, {
+              name: "ri:settings-2-fill",
+            }),
+        },
+      ]
+    );
+    if (user.current.value.isAdmin || user.current.value.isSuper) {
+      list.push({
+        label: "管理员后台",
+        key: "admin-setting",
+        icon: () =>
+          h(SvgIcon, {
+            name: "ri:admin-line",
+          }),
+      });
+    }
+    if (user.current.value.isSuper) {
+      list.push({
+        label: "超管后台",
+        key: "super-admin-setting",
+        icon: () =>
+          h(SvgIcon, {
+            name: "ri:admin-fill",
+          }),
+      });
+    }
+    list.push({
+      label: "退出登录",
+      key: "logout",
+      icon: () =>
+        h(SvgIcon, {
+          name: "ri:settings-2-fill",
+        }),
+    });
+  } else {
+    list.push({
+      label: "登录",
+      key: "login",
+      icon: () =>
+        h(SvgIcon, {
+          name: "ri:settings-2-fill",
+        }),
+    });
+  }
+  return list;
+});
+const handleSelect = async (key: string | number) => {
+  if (key === "logout") {
+    showLogoutDialog();
+  }
+  if (key === "login") {
+    showLoginDialog();
+  }
+  if (key === "user-setting") {
+    editTabs.addTab(ToolName['user-setting'])
+  }
+  if (key === "admin-setting") {
+    editTabs.addTab(ToolName['admin-manager'])
+  }
+  if (key === "super-admin-setting") {
+    editTabs.addTab(ToolName['super-manager'])
+  }
+};
+const showLoginDialog = () => {
+  dialog.create({
+    showIcon: false,
+    style: {
+      width: "510px",
+    },
+    content: () => {
+      return h(UserLogin);
+    },
+  });
+};
 const logoutRequest = useCustomRequest(async () => {
   const res = await $fetch("/api/user/logout");
   if (!res) {
@@ -42,5 +121,16 @@ const logoutRequest = useCustomRequest(async () => {
   }
   await routeHelper.reload()
 });
-const editTabs = useEditTabs() 
+const showLogoutDialog = () => {
+  dialog.warning({
+    title: "退出登录",
+    content: "确定退出登录吗？",
+    positiveText: "确定",
+    negativeText: "不确定",
+    onPositiveClick: async () => {
+      await logoutRequest.runAsync();
+    },
+    onNegativeClick: () => { },
+  });
+};
 </script>

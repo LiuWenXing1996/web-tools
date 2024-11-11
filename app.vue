@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <NuxtPage />
+    <n-dialog-provider>
+      <NuxtPage />
+    </n-dialog-provider>
   </div>
 </template>
 
