@@ -8,7 +8,6 @@
                     </div>
                 </div>
                 <div class="pr-[10px]">
-                    <user-avatar />
                 </div>
             </div>
             <n-layout has-sider class="h-full">
@@ -32,8 +31,8 @@
                         padding: '20px',
                         overflow: 'auto',
                     }">
-                        <n-tab-pane :name="item.name" :tab="item.tool?.title || `工具 ${item.name} 未实现`" v-for="item in toolTabs"
-                            display-directive="show">
+                        <n-tab-pane :name="item.name" :tab="item.tool?.meta?.title || `工具 ${item.name} 未实现`"
+                            v-for="item in toolTabs" display-directive="show">
                             <template v-if="item.tool">
                                 <component :is="item.tool.content"></component>
                             </template>
@@ -51,13 +50,13 @@
 import type { MenuOption } from 'naive-ui';
 import { first } from 'radash';
 const route = useRoute();
-const user = useCurrentUser();
 const toolName = computed(
     () => first(arraify(route.params.toolName)) || undefined
 );
 // TODO:继续讲 element 转换到 naive ui 
 
 const editTabs = useEditTabs()
+const allTools = getAllTools();
 const toolTabs = computed(() => {
     return editTabs.openedTabNames.value.map(toolName => {
         return {
@@ -67,12 +66,11 @@ const toolTabs = computed(() => {
     })
 })
 const menuOptions: ComputedRef<MenuOption[]> = computed(() => {
-    const tools = filterNullable((user.setting.value?.sideBar?.tools || []).map(e => findTool(e)));
-    return tools.map(tool => {
+    return allTools.map(tool => {
         return {
-            label: tool.title,
+            label: tool.meta?.title,
             key: tool.name,
-            icon: tool.icon
+            icon: tool.meta?.icon
         }
     })
 })
@@ -85,10 +83,3 @@ const goToHome = async () => {
     })
 }
 </script>
-<style lang="less" scoped>
-.custom-el-tabs {
-    :deep(> .el-tabs__header) {
-        margin-bottom: 0px;
-    }
-}
-</style>

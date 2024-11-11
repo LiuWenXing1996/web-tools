@@ -1,12 +1,11 @@
 import { list } from "#build/collect-tools";
 import type { VNodeChild } from "vue";
+import type { ToolMeta } from "./define";
 
 export interface Tool {
   name: string;
-  title: string;
   content: () => VNodeChild;
-  icon: () => VNodeChild;
-  description: string;
+  meta?: ToolMeta;
 }
 
 export const getAllTools = (): Tool[] => {

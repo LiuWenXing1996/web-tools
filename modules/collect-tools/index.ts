@@ -29,16 +29,13 @@ const listFiles = async (dir?: string) => {
   return files;
 };
 
-const removeExtname = (pathString: string) => {
-  const _extname = path.extname(pathString);
-  return pathString.slice(0, pathString.length - _extname.length);
-};
-
 export default defineNuxtModule(async (options, nuxt) => {
   const resolver = createResolver(import.meta.url);
   const contentFileName = "collect-tools.ts";
-  const dirName = "tools";
-  const contentComponentPath = await resolvePath(`~/${dirName}`);
+  const contentComponentDirName = "tools";
+  const contentComponentPath = await resolvePath(
+    `~/components/${contentComponentDirName}`
+  );
 
   const scanFiles = debounce(async () => {
     const files = await listFiles(contentComponentPath);
@@ -52,19 +49,17 @@ export default defineNuxtModule(async (options, nuxt) => {
       filename: contentFileName,
       write: true,
       getContents: () => {
-        const formatToolName = (name: string) => {
-          const fullName = `${name}`;
+        const formatComponentName = (name: string) => {
+          const fullName = `${contentComponentDirName}-${name}`;
           const pascalCaseName = camelcase(fullName, {
             pascalCase: true,
           });
           return `${pascalCaseName}`;
         };
-        return `
+        return `import { h } from "vue";
 ${list
   ?.map((e) => {
-    return `import ${formatToolName(e.name)} from "${removeExtname(
-      e.filepath
-    )}"`;
+    return `import {${formatComponentName(e.name)} } from "#components"`;
   })
   .join(";\n")}
 export const list = [
@@ -72,7 +67,8 @@ export const list = [
       ?.map((e) => {
         return `{
         name: "${e.name}",
-        ...${formatToolName(e.name)}
+        content: () => h(${formatComponentName(e.name)}),
+        meta:${formatComponentName(e.name)}.toolMeta
     }`;
       })
       .join(",\n")}
@@ -105,9 +101,9 @@ ${list
       from: resolver.resolve("runtime/utils"),
     },
     {
-      name: "defineTool",
-      as: "defineTool",
-      from: resolver.resolve("runtime/define-tool"),
+      name: "defineToolMeta",
+      as: "defineToolMeta",
+      from: resolver.resolve("runtime/define"),
     },
   ]);
   await scanFiles();

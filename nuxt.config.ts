@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     "@element-plus/nuxt",
-    "nuxtjs-naive-ui",
+    // "nuxtjs-naive-ui",
     "@nuxt/icon",
     "@nuxtjs/tailwindcss",
     "@vueuse/nuxt",
