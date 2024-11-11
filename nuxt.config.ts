@@ -37,6 +37,9 @@ export default defineNuxtConfig({
         resolvers: [NaiveUiResolver()],
       }),
     ],
+    ssr: {
+      noExternal: ["naive-ui"],
+    },
   },
   pages: true,
   icon: {
