@@ -4,7 +4,7 @@ export default <Partial<Config>>{
   theme: {
     extend: {
       colors: {
-        primary: "var(--el-color-primary)",
+        primary: "var(--naive-primary-color)",
       },
     },
   },

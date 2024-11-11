@@ -1,12 +1,17 @@
 <template>
   <div id="app">
-    <n-dialog-provider>
-      <NuxtPage />
-    </n-dialog-provider>
+    <n-config-provider inline-theme-disabled>
+      <n-global-style />
+      <n-dialog-provider>
+        <NuxtPage />
+      </n-dialog-provider>
+    </n-config-provider>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+useGlobalCssVars();
+</script>
 
 <style lang="less">
 body,
