@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     baseURL: "/web-tools/",
+    buildAssetsDir: "/static/",
   },
   modules: [
     "@element-plus/nuxt",
