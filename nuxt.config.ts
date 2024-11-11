@@ -5,6 +5,9 @@ import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
+  app: {
+    baseURL: "/web-tools/",
+  },
   modules: [
     "@element-plus/nuxt",
     // "nuxtjs-naive-ui",
@@ -38,7 +41,7 @@ export default defineNuxtConfig({
       }),
     ],
     ssr: {
-      noExternal: ["naive-ui"],
+      noExternal: ["naive-ui", "date-fns"],
     },
   },
   pages: true,
