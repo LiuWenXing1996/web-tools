@@ -20,28 +20,6 @@ export const copyObject = <T extends Object>(obj: T) => {
   return ss as T;
 };
 
-export const validatePassword = (str: string) => {
-  if (!str) {
-    return false;
-  }
-  if (str.length < 8) {
-    return false;
-  }
-  const regex = /^[a-zA-Z0-9]*$/;
-  return regex.test(str);
-};
-
-export const validateUserName = (str: string) => {
-  if (!str) {
-    return false;
-  }
-  if (str.length < 4) {
-    return false;
-  }
-  const regex = /^[a-zA-Z0-9\u4E00-\u9FA5]*$/;
-  return regex.test(str);
-};
-
 export const jsonParseSafely = <T>(str?: string | null): T | undefined => {
   let res: T | undefined = undefined;
   try {
