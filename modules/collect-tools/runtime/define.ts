@@ -1,8 +1,6 @@
-import type { VNodeChild } from "vue";
-
 export interface ToolMeta {
   title: string;
   description: string;
-  icon: () => VNodeChild;
+  icon: string;
 }
 export const defineToolMeta = (meta: ToolMeta) => meta;

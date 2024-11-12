@@ -5,6 +5,8 @@ export default <Partial<Config>>{
     extend: {
       colors: {
         primary: "var(--naive-primary-color)",
+        primaryActiveBg: "rgb(from var(--naive-primary-color) r g b / 0.1)",
+        hoverColor: "var(--naive-hover-color)",
       },
     },
   },

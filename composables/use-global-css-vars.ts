@@ -6,7 +6,7 @@ export const useGlobalCssVars = () => {
   const themeVars = useThemeVars();
   const styleTag = useStyleTag("");
   watch(
-    themeVars,
+    () => themeVars.value,
     () => {
       const themeVarsValue = themeVars.value;
       const vars = Object.entries(themeVarsValue).map(([key, value]) => {

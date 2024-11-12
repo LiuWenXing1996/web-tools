@@ -3,26 +3,42 @@
         <div class="h-full flex flex-col">
             <div class="h-[50px] flex justify-between items-center border-b">
                 <div class="flex h-full items-center">
-                    <div :class="`w-[64px] h-full items-center justify-center flex border-r hover:text-primary`">
+                    <div :class="`w-[50px] h-full items-center justify-center flex border-r hover:text-primary`">
                         <normal-icon name="ri:tools-fill" @click="goToHome"
                             class="cursor-pointer border rounded-[6px]"></normal-icon>
                     </div>
                 </div>
                 <div class="pr-[10px]">
+                    <div :class="`w-[50px] h-full items-center justify-center flex`">
+                        <normal-icon v-if="theme.isDark.value" name="material-symbols:nightlight-badge-rounded"
+                            @click="theme.toggle"
+                            class="cursor-pointer  rounded-[6px] hover:bg-hoverColor"></normal-icon>
+                        <normal-icon v-else name="material-symbols:light-mode-outline" @click="theme.toggle"
+                            class="cursor-pointer  rounded-[6px] hover:bg-hoverColor"></normal-icon>
+
+                    </div>
                 </div>
             </div>
-            <n-layout has-sider class="h-full">
-                <n-layout-sider bordered :width="64">
-                    <n-menu :collapsed="true" :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"
-                        @update:value="(v) => {
-                            editTabs.addTab(v)
-                        }" />
-                </n-layout-sider>
-                <div class="h-full w-[calc(100%-64px)]">
+            <div class="h-[calc(100%-50px)] flex">
+                <div class="h-full w-[50px] flex flex-col border-r py-[8px]">
+                    <div v-for="tool in allTools"
+                        :class="`w-[full] last:mb-0 mb-[4px] items-center justify-center flex`">
+                        <n-tooltip trigger="hover" placement='right'>
+                            <template #trigger>
+                                <normal-icon :name="tool.meta?.icon || ''" :class="[
+                                    'cursor-pointer rounded-[6px]',
+                                    editTabs.currentTabName.value === tool.name ? 'bg-primaryActiveBg text-primary' : 'hover:bg-hoverColor'
+                                ]" @click=" editTabs.addTab(tool.name)"></normal-icon>
+                            </template>
+                            {{ tool.meta?.title }}
+                        </n-tooltip>
+                    </div>
+                </div>
+                <div class="h-full w-[calc(100%-50px)]">
                     <template v-if="editTabs.currentTabName.value && editTabs.currentTabName.value.length > 0">
                         <n-tabs :value="editTabs.currentTabName.value" @update:value="(v) => {
                             editTabs.activeTab(v)
-                        }" type="card" animated closable @close="(key) => {
+                        }" size="small" type="card" animated closable @close="(key) => {
                             editTabs.removeTab(key);
                         }" :style="{
                             height: '100%',
@@ -51,20 +67,17 @@
                         </div>
                     </template>
                 </div>
-            </n-layout>
+            </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { useThemeVars, type MenuOption } from 'naive-ui';
 import { first } from 'radash';
 const route = useRoute();
 const toolName = computed(
     () => first(arraify(route.params.toolName)) || undefined
 );
-const themeVars = useThemeVars()
-// TODO:继续讲 element 转换到 naive ui 
-
+const theme = useTheme()
 const editTabs = useEditTabs()
 const allTools = getAllTools();
 const toolTabs = computed(() => {
@@ -75,15 +88,7 @@ const toolTabs = computed(() => {
         }
     })
 })
-const menuOptions: ComputedRef<MenuOption[]> = computed(() => {
-    return allTools.map(tool => {
-        return {
-            label: tool.meta?.title,
-            key: tool.name,
-            icon: tool.meta?.icon
-        }
-    })
-})
+
 const goToHome = async () => {
     return await navigateTo("/", {
         external: true,

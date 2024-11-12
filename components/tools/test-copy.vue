@@ -5,9 +5,9 @@
 
 defineOptions({
     toolMeta: defineToolMeta({
-        title: 'sss',
-        description: "sssssss",
-        icon: "ri:admin-line"
+        title: 'sss-copy',
+        description: "sssssss-c",
+        icon: "ri:admin-fill"
     })
 })
 </script>

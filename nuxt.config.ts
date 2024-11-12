@@ -11,10 +11,10 @@ export default defineNuxtConfig({
   },
   modules: [
     "@element-plus/nuxt",
-    // "nuxtjs-naive-ui",
     "@nuxt/icon",
     "@nuxtjs/tailwindcss",
     "@vueuse/nuxt",
+    "@nuxtjs/color-mode",
   ],
   routeRules: {
     "/**/**": { ssr: false },
@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   icon: {
     // mode: "svg",
     serverBundle: {
-      collections: ["ep", "ic", "ri"],
+      collections: ["ep", "ic", "ri", "material-symbols"],
     },
     customCollections: [
       {

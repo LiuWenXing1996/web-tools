@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <n-config-provider inline-theme-disabled>
+    <n-config-provider inline-theme-disabled :theme="theme.current.value">
       <n-global-style />
+      <global-css-vars />
       <n-dialog-provider>
         <NuxtPage />
       </n-dialog-provider>
@@ -10,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-useGlobalCssVars();
+const theme = useTheme()
 </script>
 
 <style lang="less">
@@ -18,10 +19,24 @@ body,
 html {
   margin: 0;
   padding: 0;
+
+  &.dark-mode {
+    background-color: rgb(16, 16, 20);
+  }
+
+  &.light-mode {
+    background-color: rgb(255, 255, 255);
+  }
 }
 
 #app {
   height: 100vh;
   width: 100vw;
+}
+
+*,
+::before,
+::after {
+  border-color: var(--naive-border-color);
 }
 </style>
