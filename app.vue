@@ -4,7 +4,7 @@
       <n-global-style />
       <global-css-vars />
       <n-dialog-provider>
-        <NuxtPage />
+        <NuxtPage keepalive />
       </n-dialog-provider>
     </n-config-provider>
   </div>

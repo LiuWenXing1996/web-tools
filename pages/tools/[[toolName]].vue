@@ -36,21 +36,14 @@
                 </div>
                 <div class="h-full w-[calc(100%-50px)]">
                     <template v-if="editTabs.currentTabName.value && editTabs.currentTabName.value.length > 0">
-                        <n-tabs :value="editTabs.currentTabName.value" @update:value="(v) => {
+                        <n-tabs class="h-full" :value="editTabs.currentTabName.value" @update:value="(v) => {
                             editTabs.activeTab(v)
-                        }" size="small" type="card" animated closable @close="(key) => {
+                        }" size="small" type="card" closable @close="(key) => {
                             editTabs.removeTab(key);
-                        }" :style="{
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: ' column',
-                        }" :pane-style="{
-                            flexGrow: 1,
-                            padding: '20px',
-                            overflow: 'auto',
-                        }">
+                        }" pane-class="size-full !p-[10px]">
                             <n-tab-pane :name="item.name" :tab="item.tool?.meta?.title || `工具 ${item.name} 未实现`"
                                 v-for="item in toolTabs" display-directive="show">
+
                                 <template v-if="item.tool">
                                     <component :is="item.tool.content"></component>
                                 </template>
