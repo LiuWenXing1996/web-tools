@@ -4,9 +4,11 @@
         "commitlint",
         "cssr",
         "iconify",
+        "iconoir",
         "infile",
         "Inited",
         "nitropack",
+        "popselect",
         "sider",
         "unplugin"
     ]

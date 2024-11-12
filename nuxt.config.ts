@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   icon: {
     // mode: "svg",
     serverBundle: {
-      collections: ["ep", "ic", "ri", "material-symbols"],
+      collections: ["ep", "ic", "ri", "material-symbols", "iconoir"],
     },
     customCollections: [
       {

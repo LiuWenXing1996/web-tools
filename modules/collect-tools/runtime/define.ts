@@ -1,6 +1,6 @@
 export interface ToolMeta {
   title: string;
   description: string;
-  icon: string;
+  category: string;
 }
 export const defineToolMeta = (meta: ToolMeta) => meta;

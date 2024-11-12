@@ -21,17 +21,20 @@
             </div>
             <div class="h-[calc(100%-50px)] flex">
                 <div class="h-full w-[50px] flex flex-col border-r py-[8px]">
-                    <div v-for="tool in allTools"
+                    <div v-for="opt in sideBarOptions"
                         :class="`w-[full] last:mb-0 mb-[4px] items-center justify-center flex`">
-                        <n-tooltip trigger="hover" placement='right'>
-                            <template #trigger>
-                                <normal-icon :name="tool.meta?.icon || ''" :class="[
-                                    'cursor-pointer rounded-[6px]',
-                                    editTabs.currentTabName.value === tool.name ? 'bg-primaryActiveBg text-primary' : 'hover:bg-hoverColor'
-                                ]" @click=" editTabs.addTab(tool.name)"></normal-icon>
+                        <n-popselect v-model:value="editTabs.currentTabName.value" :options="opt.list" size="medium"
+                            scrollable placement='right-start' @update:value="(v) => {
+                                editTabs.addTab(v)
+                            }">
+                            <template #header>
+                                {{ opt.title }}
                             </template>
-                            {{ tool.meta?.title }}
-                        </n-tooltip>
+                            <normal-icon :name="opt.icon || ''" :class="[
+                                'cursor-pointer rounded-[6px]',
+                                opt.list.find(e => e.value === editTabs.currentTabName.value) ? 'bg-primaryActiveBg text-primary' : 'hover:bg-hoverColor'
+                            ]"></normal-icon>
+                        </n-popselect>
                     </div>
                 </div>
                 <div class="h-full w-[calc(100%-50px)]">
@@ -65,14 +68,29 @@
     </div>
 </template>
 <script setup lang="ts">
+import type { SelectOption } from 'naive-ui';
 import { first } from 'radash';
 const route = useRoute();
 const toolName = computed(
     () => first(arraify(route.params.toolName)) || undefined
 );
+const ss = ref('Drive My Car')
 const theme = useTheme()
 const editTabs = useEditTabs()
 const allTools = getAllTools();
+const sideBarOptions = Object.entries(ToolCategoryMap).map(([name, meta]) => {
+    const list: SelectOption[] = allTools.filter(tool => tool.meta?.category === name).map(tool => {
+        return {
+            label: tool.meta?.title || tool.name,
+            value: tool.name
+        }
+    })
+    return {
+        name,
+        ...meta,
+        list
+    }
+})
 const toolTabs = computed(() => {
     return editTabs.openedTabNames.value.map(toolName => {
         return {

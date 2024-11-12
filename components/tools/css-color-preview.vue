@@ -33,7 +33,7 @@ defineOptions({
     toolMeta: defineToolMeta({
         title: 'css 颜色预览',
         description: "sssssss",
-        icon: "ci:color"
+        category: ToolCategory.dev
     })
 })
 
