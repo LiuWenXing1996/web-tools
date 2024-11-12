@@ -97,4 +97,15 @@ const goToHome = async () => {
         }
     })
 }
+
+watch(toolName, () => {
+    if (toolName.value) {
+        if (toolName.value !== editTabs.currentTabName.value) {
+            editTabs.addTab(toolName.value)
+        }
+    }
+
+}, {
+    immediate: true
+})
 </script>

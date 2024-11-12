@@ -9,6 +9,8 @@ const store = useStorage<{
 });
 
 export const useEditTabs = () => {
+  const route = useRoute();
+  const router = useRouter();
   const openedTabNames = computed(() => [...store.value.openedTabNames]);
   const currentTabName = computed(() => store.value.currentTabName);
   const addTab = (name: string) => {
@@ -35,6 +37,12 @@ export const useEditTabs = () => {
       currentTabName: name,
     };
   };
+  watch(
+    () => store.value.currentTabName,
+    () => {
+      router.push(`/tools/${store.value.currentTabName}`);
+    }
+  );
   return {
     openedTabNames,
     currentTabName,
