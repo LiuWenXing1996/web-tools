@@ -5,6 +5,7 @@ import {
   createResolver,
   defineNuxtModule,
   resolvePath,
+  updateTemplates,
 } from "nuxt/kit";
 import { debounce } from "perfect-debounce";
 import camelcase from "camelcase";
@@ -36,52 +37,56 @@ export default defineNuxtModule(async (options, nuxt) => {
   const contentComponentPath = await resolvePath(
     `~/components/${contentComponentDirName}`
   );
-
-  const scanFiles = debounce(async () => {
-    const files = await listFiles(contentComponentPath);
-    const list: ToolFileInfo[] = files.map((f) => {
-      return {
-        name: path.basename(f, path.extname(f)),
-        filepath: f,
+  let toolFileInfoList: ToolFileInfo[] = [];
+  addTemplate({
+    filename: contentFileName,
+    // write: true,
+    getContents: () => {
+      const formatComponentName = (name: string) => {
+        const fullName = `${contentComponentDirName}-${name}`;
+        const pascalCaseName = camelcase(fullName, {
+          pascalCase: true,
+        });
+        return `${pascalCaseName}`;
       };
-    });
-    addTemplate({
-      filename: contentFileName,
-      write: true,
-      getContents: () => {
-        const formatComponentName = (name: string) => {
-          const fullName = `${contentComponentDirName}-${name}`;
-          const pascalCaseName = camelcase(fullName, {
-            pascalCase: true,
-          });
-          return `${pascalCaseName}`;
-        };
-        return `import { h } from "vue";
-${list
+      return `import { h } from "vue";
+${toolFileInfoList
   ?.map((e) => {
     return `import {${formatComponentName(e.name)} } from "#components"`;
   })
   .join(";\n")}
 export const list = [
-    ${list
-      ?.map((e) => {
-        return `{
-        name: "${e.name}",
-        content: () => h(${formatComponentName(e.name)}),
-        meta:${formatComponentName(e.name)}.toolMeta
-    }`;
-      })
-      .join(",\n")}
+  ${toolFileInfoList
+    ?.map((e) => {
+      return `{
+      name: "${e.name}",
+      content: () => h(${formatComponentName(e.name)}),
+      meta:${formatComponentName(e.name)}.toolMeta
+  }`;
+    })
+    .join(",\n")}
 ];
 export enum ToolName {
-${list
+${toolFileInfoList
   .map((e) => {
     return `"${e.name}" = "${e.name}"`;
   })
   .join(",\n")}
 }
 `;
-      },
+    },
+  });
+
+  const scanFiles = debounce(async () => {
+    const files = await listFiles(contentComponentPath);
+    toolFileInfoList = files.map((f) => {
+      return {
+        name: path.basename(f, path.extname(f)),
+        filepath: f,
+      };
+    });
+    updateTemplates({
+      filter: (e) => e.filename === contentFileName,
     });
   }, 25);
   addImports([
@@ -107,9 +112,14 @@ ${list
     },
   ]);
   await scanFiles();
-  nuxt.hook("builder:watch", async (event, path) => {
+  nuxt.hook("builder:watch", async (event, path, ...rest) => {
+    console.log({
+      event,
+      path,
+      rest,
+    });
     console.log(`collect-tools-watch:${path}`);
-    if (path.includes(contentComponentPath)) {
+    if (path.startsWith(`components/${contentComponentDirName}`)) {
       console.log(`collect-tools-watch:re scan`);
       scanFiles();
     }

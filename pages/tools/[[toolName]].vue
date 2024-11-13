@@ -101,6 +101,7 @@ const toolTabs = computed(() => {
 })
 
 const goToHome = async () => {
+    // TODO:修复这地方的跳转错误
     return await navigateTo("/", {
         external: true,
         open: {

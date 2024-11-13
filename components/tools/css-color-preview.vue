@@ -32,7 +32,7 @@ import type { FormInst, FormRules } from 'naive-ui';
 defineOptions({
     toolMeta: defineToolMeta({
         title: 'css 颜色预览',
-        description: "sssssss",
+        description: "css 颜色预览",
         category: ToolCategory.dev
     })
 })
