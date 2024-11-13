@@ -3,7 +3,7 @@
         <div class="h-full flex flex-col">
             <div class="h-[50px] flex justify-between items-center border-b">
                 <div class="flex h-full items-center">
-                    <a href="/" target="_blank"
+                    <a :href="home.href" target="_blank"
                         :class="`w-[50px] h-full items-center justify-center flex border-r hover:text-primary`">
                         <normal-icon name="ri:tools-fill" class="cursor-pointer border rounded-[6px]"></normal-icon>
                     </a>
@@ -79,7 +79,8 @@ const route = useRoute();
 const toolName = computed(
     () => first(arraify(route.params.toolName)) || undefined
 );
-const ss = ref('Drive My Car')
+const router = useRouter();
+const home = router.resolve("/")
 const theme = useTheme()
 const editTabs = useEditTabs()
 const allTools = getAllTools();
