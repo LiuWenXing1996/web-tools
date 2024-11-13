@@ -10,7 +10,6 @@ export default defineNuxtConfig({
     buildAssetsDir: "/static/",
   },
   modules: [
-    "@element-plus/nuxt",
     "@nuxt/icon",
     "@nuxtjs/tailwindcss",
     "@vueuse/nuxt",
