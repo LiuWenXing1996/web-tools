@@ -19,7 +19,7 @@
                                     </template>
                                     <div>
                                         <div>
-                                            支持格式:
+                                            支持输入的格式
                                         </div>
                                         <div v-for="m in methods" class="ml-[10px]">
                                             {{ m.example }}
