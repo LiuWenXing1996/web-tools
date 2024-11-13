@@ -47,7 +47,6 @@
     "@vue-macros/common": "^1.15.0",
     "husky": "^9.1.6",
     "less": "^4.2.0",
-    "parallel-wait-run": "^0.1.2",
     "perfect-debounce": "^1.0.0",
     "prisma-zod-generator": "^0.8.13",
     "unplugin-auto-import": "^0.18.3",
