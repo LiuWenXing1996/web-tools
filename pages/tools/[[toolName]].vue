@@ -8,15 +8,9 @@
                         <normal-icon name="ri:tools-fill" class="cursor-pointer border rounded-[6px]"></normal-icon>
                     </a>
                 </div>
-                <div class="pr-[10px] flex">
-                    <div :class="`h-full items-center justify-center flex`">
-                        <normal-icon v-if="theme.isDark.value" name="material-symbols:nightlight-badge-rounded"
-                            @click="theme.toggle"
-                            class="cursor-pointer  rounded-[6px] hover:bg-hoverColor"></normal-icon>
-                        <normal-icon v-else name="material-symbols:light-mode-outline" @click="theme.toggle"
-                            class="cursor-pointer  rounded-[6px] hover:bg-hoverColor"></normal-icon>
 
-                    </div>
+                <div class="pr-[10px] flex">
+                    <theme-button />
                     <a href="https://github.com/LiuWenXing1996/web-tools" target="_blank"
                         :class="`h-full items-center justify-center flex pl-[2px]`">
                         <normal-icon name="mdi:github"

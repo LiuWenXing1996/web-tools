@@ -64,6 +64,9 @@ export default defineNuxtConfig({
       },
     ],
   },
+  colorMode: {
+    preference: "system",
+  },
   experimental: {
     payloadExtraction: false,
   },

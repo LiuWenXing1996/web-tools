@@ -3,7 +3,7 @@ import { darkTheme } from "naive-ui";
 export const useTheme = () => {
   const colorMode = useColorMode();
   const isDark = computed(() => {
-    return colorMode.preference === "dark";
+    return colorMode.value === "dark";
   });
   const current = computed(() => {
     if (isDark.value) {
@@ -11,6 +11,13 @@ export const useTheme = () => {
     }
     return null;
   });
+  const setPreference = (val: string) => {
+    colorMode.preference = val;
+  };
+  const preference = computed(() => {
+    return colorMode.preference;
+  });
+
   const toggle = () => {
     if (isDark.value) {
       colorMode.preference = "light";
@@ -20,6 +27,8 @@ export const useTheme = () => {
   };
   return {
     toggle,
+    setPreference,
+    preference,
     current,
     isDark,
   };
