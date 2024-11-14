@@ -1,11 +1,11 @@
 <template>
-    <div class="size-full flex">
-        <div class="w-[50%] mr-[5px]">
+    <tool-item-wrapper>
+        <template #input>
             <n-form ref="formRef" :model="model" :rules="rules" require-mark-placement="left">
-                <fieldset class="rounded-[8px] border p-[16px]">
-                    <legend class="-ml-[4px] px-[4px] text-[14px] font-medium">
+                <tool-item-input-fieldset>
+                    <template #label>
                         文本
-                    </legend>
+                    </template>
                     <n-form-item path="text" first>
                         <template #label>
                             <div class="inline-flex">
@@ -14,33 +14,30 @@
                                 </span>
                             </div>
                         </template>
-                        <n-input clearable placeholder="输入单词" v-model:value="model.text" type="textarea" :rows="8" />
+                        <n-input clearable placeholder="输入文本" v-model:value="model.text" type="textarea" :rows="8" />
                     </n-form-item>
-                </fieldset>
+                </tool-item-input-fieldset>
             </n-form>
-
-        </div>
-        <div class="w-[50%] ml-[5px]">
-            <div class="relative flex h-full flex-col rounded-[12px] bg-secondary p-[16px]">
-                <n-descriptions label-placement="left" :column="1">
-                    <n-descriptions-item v-for="text in textRes">
-                        <template #label>
-                            <div class="inline-flex">
-                                <span class="font-medium">
-                                    {{ text.name }}
-                                </span>
-                            </div>
-                        </template>
+        </template>
+        <template #output>
+            <n-descriptions label-placement="left" :column="1">
+                <n-descriptions-item v-for="text in textRes">
+                    <template #label>
                         <div class="inline-flex">
-                            <span>
-                                {{ text.result }}
+                            <span class="font-medium">
+                                {{ text.name }}
                             </span>
                         </div>
-                    </n-descriptions-item>
-                </n-descriptions>
-            </div>
-        </div>
-    </div>
+                    </template>
+                    <div class="inline-flex">
+                        <span>
+                            {{ text.result }}
+                        </span>
+                    </div>
+                </n-descriptions-item>
+            </n-descriptions>
+        </template>
+    </tool-item-wrapper>
 </template>
 <script setup lang="ts">
 import type { FormInst, FormRules } from 'naive-ui';

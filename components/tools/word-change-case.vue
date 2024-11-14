@@ -1,11 +1,11 @@
 <template>
-    <div class="size-full flex">
-        <div class="w-[50%] mr-[5px]">
-            <fieldset class="rounded-[8px] border p-[16px]">
-                <legend class="-ml-[4px] px-[4px] text-[14px] font-medium">
-                    文本
-                </legend>
-                <n-form ref="formRef" :model="model" :rules="rules" require-mark-placement="left">
+    <tool-item-wrapper>
+        <template #input>
+            <n-form ref="formRef" :model="model" :rules="rules" require-mark-placement="left">
+                <tool-item-input-fieldset>
+                    <template #label>
+                        文本
+                    </template>
                     <n-form-item path="text" first>
                         <template #label>
                             <div class="inline-flex">
@@ -30,46 +30,43 @@
                         </template>
                         <n-input clearable placeholder="输入单词" v-model:value="model.text" />
                     </n-form-item>
-                </n-form>
-            </fieldset>
-        </div>
-        <div class="w-[50%] ml-[5px]">
-            <div class="relative flex h-full flex-col rounded-[12px] bg-secondary p-[16px]">
-                <n-descriptions label-placement="left" :column="1">
-                    <n-descriptions-item v-for="text in textRes">
-                        <template #label>
-                            <div class="inline-flex">
-                                <span class="font-medium">
-                                    {{ text.name }}
-                                </span>
-                                <n-tooltip trigger="hover">
-                                    <template #trigger>
-                                        <svg-icon class="ml-[2px] pb-[5px] text-[12px]"
-                                            name="material-symbols:chat-info" />
-                                    </template>
-                                    <div>
-                                        {{ `示例: ${text.example}` }}
-                                    </div>
-                                </n-tooltip>
-                            </div>
-                        </template>
-                        <div class="inline-flex" v-if="text.result">
-                            <span>
-                                {{ text.result }}
+                </tool-item-input-fieldset>
+            </n-form>
+        </template>
+        <template #output>
+            <n-descriptions label-placement="left" :column="1">
+                <n-descriptions-item v-for="text in textRes">
+                    <template #label>
+                        <div class="inline-flex">
+                            <span class="font-medium">
+                                {{ text.name }}
                             </span>
                             <n-tooltip trigger="hover">
                                 <template #trigger>
-                                    <svg-icon class="ml-[2px] pb-[5px] text-[12px] cursor-pointer"
-                                        name="material-symbols:content-copy" @click="handleCopy(text.result)" />
+                                    <svg-icon class="ml-[2px] pb-[5px] text-[12px]" name="material-symbols:chat-info" />
                                 </template>
-                                {{ `点击复制` }}
+                                <div>
+                                    {{ `示例: ${text.example}` }}
+                                </div>
                             </n-tooltip>
                         </div>
-                    </n-descriptions-item>
-                </n-descriptions>
-            </div>
-        </div>
-    </div>
+                    </template>
+                    <div class="inline-flex" v-if="text.result">
+                        <span>
+                            {{ text.result }}
+                        </span>
+                        <n-tooltip trigger="hover">
+                            <template #trigger>
+                                <svg-icon class="ml-[2px] pb-[5px] text-[12px] cursor-pointer"
+                                    name="material-symbols:content-copy" @click="handleCopy(text.result)" />
+                            </template>
+                            {{ `点击复制` }}
+                        </n-tooltip>
+                    </div>
+                </n-descriptions-item>
+            </n-descriptions>
+        </template>
+    </tool-item-wrapper>
 </template>
 <script setup lang="ts">
 import type { FormInst, FormRules } from 'naive-ui';
