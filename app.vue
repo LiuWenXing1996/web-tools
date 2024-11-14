@@ -21,6 +21,8 @@ body,
 html {
   margin: 0;
   padding: 0;
+  height: 100vh;
+  width: 100vw;
 
   &.dark-mode {
     background-color: rgb(16, 16, 20);
