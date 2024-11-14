@@ -51,13 +51,7 @@
                         }" pane-class="size-full !p-[10px]">
                             <n-tab-pane :name="item.name" :tab="item.tool?.meta?.title || `工具 ${item.name} 未实现`"
                                 v-for="item in toolTabs" display-directive="show">
-
-                                <template v-if="item.tool">
-                                    <component :is="item.tool.content"></component>
-                                </template>
-                                <template v-else>
-                                    {{ `工具 ${item.name} 未实现` }}
-                                </template>
+                                <tool-item-render :name="item.name" />
                             </n-tab-pane>
                         </n-tabs>
                     </template>

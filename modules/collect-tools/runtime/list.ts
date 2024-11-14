@@ -1,4 +1,4 @@
-import { list } from "#build/collect-tools";
+import { list } from "#build/collect-tools/list";
 import type { VNodeChild } from "vue";
 import type { ToolMeta } from "./define";
 
@@ -16,5 +16,3 @@ export const findTool = (name: string) => {
   const tools = getAllTools();
   return tools.find((e) => e.name === name);
 };
-
-export { ToolName } from "#build/collect-tools";

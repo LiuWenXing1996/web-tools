@@ -32,15 +32,18 @@ const listFiles = async (dir?: string) => {
 
 export default defineNuxtModule(async (options, nuxt) => {
   const resolver = createResolver(import.meta.url);
-  const contentFileName = "collect-tools.ts";
+  enum contentFiles {
+    "names" = "collect-tools/names.ts",
+    "list" = "collect-tools/list.ts",
+  }
   const contentComponentDirName = "tools";
   const contentComponentPath = await resolvePath(
     `~/components/${contentComponentDirName}`
   );
   let toolFileInfoList: ToolFileInfo[] = [];
   addTemplate({
-    filename: contentFileName,
-    // write: true,
+    filename: contentFiles.list,
+    write: true,
     getContents: () => {
       const formatComponentName = (name: string) => {
         const fullName = `${contentComponentDirName}-${name}`;
@@ -66,6 +69,14 @@ export const list = [
     })
     .join(",\n")}
 ];
+`;
+    },
+  });
+  addTemplate({
+    filename: contentFiles.names,
+    write: true,
+    getContents: () => {
+      return `
 export enum ToolName {
 ${toolFileInfoList
   .map((e) => {
@@ -85,25 +96,26 @@ ${toolFileInfoList
         filepath: f,
       };
     });
-    updateTemplates({
-      filter: (e) => e.filename === contentFileName,
+    await updateTemplates({
+      filter: (e) =>
+        e.filename === contentFiles.list || e.filename === contentFiles.names,
     });
   }, 25);
   addImports([
     {
       name: "getAllTools",
       as: "getAllTools",
-      from: resolver.resolve("runtime/utils"),
+      from: resolver.resolve("runtime/list"),
     },
     {
       name: "findTool",
       as: "findTool",
-      from: resolver.resolve("runtime/utils"),
+      from: resolver.resolve("runtime/list"),
     },
     {
       name: "ToolName",
       as: "ToolName",
-      from: resolver.resolve("runtime/utils"),
+      from: resolver.resolve(`runtime/names`),
     },
     {
       name: "defineToolMeta",
