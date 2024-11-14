@@ -12,9 +12,10 @@ export default defineNuxtConfig({
     baseURL: "/web-tools/",
     buildAssetsDir: "/static/",
   },
-  devServer: {
-    host: "0",
-  },
+  // 如果要要在移动端浏览器调试网页，请打开配置
+  // devServer: {
+  //   host: "0",
+  // },
   modules: [
     "@nuxt/icon",
     "@nuxtjs/tailwindcss",

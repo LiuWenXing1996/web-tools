@@ -24,10 +24,12 @@ html {
 
   &.dark-mode {
     background-color: rgb(16, 16, 20);
+    color-scheme: dark;
   }
 
   &.light-mode {
     background-color: rgb(255, 255, 255);
+    color-scheme: light;
   }
 }
 
