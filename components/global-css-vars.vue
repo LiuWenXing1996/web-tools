@@ -8,9 +8,6 @@ const styleTag = useStyleTag("");
 watch(
     () => themeVars.value,
     () => {
-        console.log({
-            themeVars,
-        });
         const themeVarsValue = themeVars.value;
         const vars = Object.entries(themeVarsValue).map(([key, value]) => {
             const keyFormatted = `--naive-${kebabCase(key)}`;

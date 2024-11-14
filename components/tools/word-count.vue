@@ -1,0 +1,118 @@
+<template>
+    <div class="size-full flex">
+        <div class="w-[50%] mr-[5px]">
+            <n-form ref="formRef" :model="model" :rules="rules" require-mark-placement="left">
+                <fieldset class="rounded-[8px] border p-[16px]">
+                    <legend class="-ml-[4px] px-[4px] text-[14px] font-medium">
+                        文本
+                    </legend>
+                    <n-form-item path="text" first>
+                        <template #label>
+                            <div class="inline-flex">
+                                <span>
+                                    输入
+                                </span>
+                            </div>
+                        </template>
+                        <n-input clearable placeholder="输入单词" v-model:value="model.text" type="textarea" :rows="8" />
+                    </n-form-item>
+                </fieldset>
+            </n-form>
+
+        </div>
+        <div class="w-[50%] ml-[5px]">
+            <div class="relative flex h-full flex-col rounded-[12px] bg-secondary p-[16px]">
+                <n-descriptions label-placement="left" :column="1">
+                    <n-descriptions-item v-for="text in textRes">
+                        <template #label>
+                            <div class="inline-flex">
+                                <span class="font-medium">
+                                    {{ text.name }}
+                                </span>
+                            </div>
+                        </template>
+                        <div class="inline-flex">
+                            <span>
+                                {{ text.result }}
+                            </span>
+                        </div>
+                    </n-descriptions-item>
+                </n-descriptions>
+            </div>
+        </div>
+    </div>
+</template>
+<script setup lang="ts">
+import type { FormInst, FormRules } from 'naive-ui';
+
+defineOptions({
+    toolMeta: defineToolMeta({
+        title: '字数统计',
+        description: "字数统计",
+        category: ToolCategory.text
+    })
+})
+const initialText = '字数统计123'
+const model = reactive({
+    text: initialText,
+})
+const formRef = ref<FormInst | null>(null)
+const finalText = computedAsync(
+    async () => {
+        const text = model.text;
+        try {
+            await formRef.value?.validate() || {}
+        } catch (error) {
+            return
+        }
+        return text
+    },
+    initialText,
+)
+
+const methods: {
+    name: string,
+    run: (val: string) => string | number
+}[] = [
+        { name: "总字数", run: (val) => val.length },
+        { name: "汉字", run: (val) => (val.match(/[\u4e00-\u9fa5]/g) || []).length },
+        { name: "数字", run: (val) => (val.match(/[\d+]/g) || []).length },
+        { name: "行数", run: (val) => val.split(/\r\n|\r|\n/).length },
+        { name: "字母", run: (val) => (val.match(/[a-zA-Z]/g) || []).length },
+        { name: "空白字符", run: (val) => (val.match(/[\s*]/g) || []).length },
+        {
+            name: "大小", run: (val) => {
+                const decimals = 2
+                const bytes = new TextEncoder().encode(val).buffer.byteLength;
+                if (bytes === 0) {
+                    return '0 Bytes';
+                }
+
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+                return `${Number.parseFloat((bytes / k ** i).toFixed(decimals))} ${sizes[i]}`;
+            }
+        },
+    ]
+
+const textRes = computed(() => {
+    const text = finalText.value || "";
+    return methods.map(m => {
+        return {
+            ...m,
+            result: m.run(text)
+        }
+    })
+})
+const rules: FormRules = {
+    text: [
+        {
+            required: true,
+            message: '输入文本',
+            trigger: ['input', 'change', 'blur', 'focus']
+        }
+    ]
+}
+</script>

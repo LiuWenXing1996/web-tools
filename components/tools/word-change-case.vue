@@ -91,13 +91,13 @@ const model = reactive({
 const formRef = ref<FormInst | null>(null)
 const finalText = computedAsync(
     async () => {
-        const color = model.text;
+        const text = model.text;
         try {
             await formRef.value?.validate() || {}
         } catch (error) {
             return
         }
-        return color
+        return text
     },
     initialText,
 )

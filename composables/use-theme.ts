@@ -2,9 +2,6 @@ import { darkTheme } from "naive-ui";
 
 export const useTheme = () => {
   const colorMode = useColorMode();
-  console.log({
-    colorMode: colorMode.preference,
-  });
   const isDark = computed(() => {
     return colorMode.preference === "dark";
   });
