@@ -1,15 +1,13 @@
 <template>
-  <div id="app">
-    <n-config-provider inline-theme-disabled :theme="theme.current.value">
-      <n-global-style />
-      <global-css-vars />
-      <n-dialog-provider>
-        <n-message-provider>
-          <NuxtPage keepalive />
-        </n-message-provider>
-      </n-dialog-provider>
-    </n-config-provider>
-  </div>
+  <n-config-provider inline-theme-disabled :theme="theme.current.value" class="size-full">
+    <n-global-style />
+    <global-css-vars />
+    <n-dialog-provider>
+      <n-message-provider>
+        <NuxtPage keepalive />
+      </n-message-provider>
+    </n-dialog-provider>
+  </n-config-provider>
 </template>
 
 <script setup lang="ts">
@@ -21,8 +19,8 @@ body,
 html {
   margin: 0;
   padding: 0;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 
   &.dark-mode {
     background-color: rgb(16, 16, 20);
@@ -31,11 +29,6 @@ html {
   &.light-mode {
     background-color: rgb(255, 255, 255);
   }
-}
-
-#app {
-  height: 100vh;
-  width: 100vw;
 }
 
 *,

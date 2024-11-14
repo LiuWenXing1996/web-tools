@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen w-screen">
+    <div class="size-full">
         <div class="h-full flex flex-col">
             <div class="h-[50px] flex justify-between items-center border-b">
                 <div class="flex h-full items-center">

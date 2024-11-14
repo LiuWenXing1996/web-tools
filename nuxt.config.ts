@@ -6,8 +6,14 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   app: {
+    rootAttrs: {
+      style: "height:100%;width:100%;",
+    },
     baseURL: "/web-tools/",
     buildAssetsDir: "/static/",
+  },
+  devServer: {
+    host: "0",
   },
   modules: [
     "@nuxt/icon",
