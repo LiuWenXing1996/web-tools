@@ -28,6 +28,7 @@
     "nodemailer": "^6.9.16",
     "nuxt": "^3.13.0",
     "nuxtjs-naive-ui": "1.0.1",
+    "qr-code-styling": "^1.8.4",
     "radash": "^12.1.0",
     "tailwindcss": "^3.4.14",
     "vue": "latest",

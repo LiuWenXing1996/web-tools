@@ -49,11 +49,11 @@ defineOptions({
         category: ToolCategory.text,
         related: [
             {
-                title: "Tools-Web 字数统计",
+                title: "Tools-Web - 字数统计",
                 url: "https://tools.ranblogs.com/wordcount"
             },
             {
-                title: "IT-TOOLS 文本统计",
+                title: "IT-TOOLS - 文本统计",
                 url: "https://www.aiotools.top/text-statistics"
             }
         ]
