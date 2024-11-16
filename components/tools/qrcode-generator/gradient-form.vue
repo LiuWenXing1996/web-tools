@@ -48,6 +48,7 @@
                             <n-form-item label="位置" :show-label="true" label-placement="left" :label-style="{
                                 alignItems: 'center'
                             }" :show-feedback="false" :path="`gradient.colorStops[${index}].offset`">
+                                <!-- FIXME:移动端时这个地方的输入框被挡住了 -->
                                 <n-input-number v-model:value="item.offset" :min="0" :max="100" class="w-full">
                                     <template #suffix>
                                         %
@@ -58,7 +59,7 @@
                     </div>
                     <div class="ml-[10px] h-[34px] flex items-center">
                         <n-button strong secondary circle size="tiny" :disabled="model.colorStops.length <= 1" @click="() => {
-                            const newColorStops = model.colorStops.filter((value, i) => {
+                            const newColorStops = model.colorStops.filter((v, i) => {
                                 return i !== index
                             })
                             model.colorStops = newColorStops

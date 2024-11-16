@@ -8,18 +8,16 @@
                 </n-space>
             </n-radio-group>
         </n-form-item>
-        <n-form-item path="value.single" first label="颜色" v-if="model.type === 'single'">
-            <n-color-picker v-model:value="model.value.single" :render-label="() => ''" />
+        <n-form-item path="content.single" first label="颜色" v-if="model.type === 'single'">
+            <n-color-picker v-model:value="model.content.single" :render-label="() => ''" />
         </n-form-item>
-        <template v-if="model.type === 'gradient'">
-            <tools-qrcode-generator-gradient-form ref="colorGradient" />
-        </template>
+        <tools-qrcode-generator-gradient-form ref="colorGradient" v-show="model.type === 'gradient'" />
     </n-form>
 </template>
 <script lang="ts">
 export type Model = {
     type: "single" | "gradient",
-    value: {
+    content: {
         single: string,
         gradient: GradientFormModel | undefined
     }
@@ -34,7 +32,7 @@ const formRef = ref<FormInst | null>(null)
 
 const model = reactive<Model>({
     type: "single",
-    value: {
+    content: {
         single: "#000",
         gradient: undefined
     }
@@ -42,7 +40,7 @@ const model = reactive<Model>({
 const rules: FormRules = {}
 
 watch(() => colorGradientRef.value?.model, (val) => {
-    model.value.gradient = val
+    model.content.gradient = val
 })
 
 defineExpose({

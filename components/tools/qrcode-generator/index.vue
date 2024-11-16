@@ -9,9 +9,6 @@
                     <n-form-item path="data" first label="文本">
                         <n-input clearable placeholder="输入内容" v-model:value="model.data" type="textarea" :rows="3" />
                     </n-form-item>
-                    <n-form-item path="img" first label="图标">
-                        <n-upload v-model:file-list="iconFileList" list-type="image-card" :max="1" />
-                    </n-form-item>
                     <n-form-item path="width" first label="宽度">
                         <n-input-number v-model:value="model.width" :min="1" :step="50">
                             <template #suffix>
@@ -33,6 +30,21 @@
                             </template>
                         </n-input-number>
                     </n-form-item>
+                    <n-form-item path="errorCorrectionLevel" first label="纠错级别">
+                        <n-select v-model:value="model.errorCorrectionLevel" :options="errorCorrectionLevelOptions" />
+                    </n-form-item>
+                </tool-item-input-fieldset>
+                <tool-item-input-fieldset>
+                    <template #label>
+                        图标
+                    </template>
+                    <tools-qrcode-generator-logo-options-form ref="logoOptions" />
+                </tool-item-input-fieldset>
+                <tool-item-input-fieldset>
+                    <template #label>
+                        背景
+                    </template>
+                    <tools-qrcode-generator-background-options-form ref="backgroundOptions" />
                 </tool-item-input-fieldset>
                 <tool-item-input-fieldset>
                     <template #label>
@@ -52,7 +64,6 @@
                     </template>
                     <tools-qrcode-generator-corners-square-options-form ref="cornersSquareOptions" />
                 </tool-item-input-fieldset>
-
             </n-form>
         </template>
         <template #output>
@@ -67,11 +78,13 @@
 </template>
 <script setup lang="ts">
 import type { FormInst, FormRules, SelectOption, UploadFileInfo } from 'naive-ui';
-import QRCodeStyling, { type FileExtension, type Gradient, type Options } from 'qr-code-styling';
+import QRCodeStyling, { type ErrorCorrectionLevel, type FileExtension, type Gradient, type Options } from 'qr-code-styling';
 import type { Model as DotsOptionsFormModel } from "./dots-options-form.vue"
 import type { Model as CornersOptionsFormModel } from "./corners-options-form.vue"
 import type { Model as CornersSquareOptionsFormModel } from "./corners-square-options-form.vue"
 import type { Model as ColorFormModel } from "./color-form.vue"
+import type { Model as BackgroundOptionsFormModel } from "./background-options-form.vue"
+import type { Model as LogoOptionsFormModel } from "./logo-options-form.vue"
 
 defineOptions({
     toolMeta: defineToolMeta({
@@ -94,6 +107,11 @@ const initialText = '二维码生成';
 const dotsOptionsRef = useTemplateRef('dotsOptions');
 const cornersOptionsRef = useTemplateRef('cornersOptions');
 const cornersSquareOptionsRef = useTemplateRef('cornersSquareOptions');
+const backgroundOptionsRef = useTemplateRef('backgroundOptions');
+const logoOptionsRef = useTemplateRef('logoOptions');
+watch(() => logoOptionsRef.value?.model, (val) => {
+    model.logoOptions = val
+})
 
 watch(() => dotsOptionsRef.value?.model, (val) => {
     model.dotsOptions = val
@@ -104,17 +122,17 @@ watch(() => cornersOptionsRef.value?.model, (val) => {
 watch(() => cornersSquareOptionsRef.value?.model, (val) => {
     model.cornersSquareOptions = val
 })
-
-// 提供一些预设？
-// 随机一个预设？
-// 增加历史记录功能
-// 配置导入和导出？
-// TODO:大致完成功能，还差背景色和 logo 设置，还有就是误差率设置
+watch(() => backgroundOptionsRef.value?.model, (val) => {
+    model.backgroundOptions = val
+})
 
 type Model = Pick<Options, "data" | "image" | "width" | "height" | "margin"> & {
+    errorCorrectionLevel: ErrorCorrectionLevel,
+    logoOptions: LogoOptionsFormModel | undefined,
+    backgroundOptions: BackgroundOptionsFormModel | undefined,
     dotsOptions: DotsOptionsFormModel | undefined,
     cornersOptions: CornersOptionsFormModel | undefined,
-    cornersSquareOptions: CornersSquareOptionsFormModel | undefined
+    cornersSquareOptions: CornersSquareOptionsFormModel | undefined,
 }
 
 const modelToQrcodeOptions = (model: Model): Options => {
@@ -127,11 +145,11 @@ const modelToQrcodeOptions = (model: Model): Options => {
         gradient?: Gradient;
     } => {
         return {
-            color: color?.type === "single" ? color.value.single : undefined,
+            color: color?.type === "single" ? color.content.single : undefined,
             gradient: color?.type === "gradient" ? {
-                type: color.value.gradient?.type || 'linear',
-                rotation: (color?.value?.gradient?.rotation || 0) * (Math.PI / 180),
-                colorStops: (color?.value?.gradient?.colorStops || []).map(e => {
+                type: color.content.gradient?.type || 'linear',
+                rotation: (color?.content?.gradient?.rotation || 0) * (Math.PI / 180),
+                colorStops: (color?.content?.gradient?.colorStops || []).map(e => {
                     return {
                         ...e,
                         offset: e.offset / 100
@@ -143,10 +161,27 @@ const modelToQrcodeOptions = (model: Model): Options => {
 
     return {
         data: utf8_encode(model.data || ""),
-        image: model.image,
+        image: model.logoOptions?.image,
         height: model.height,
         width: model.width,
         margin: model.margin,
+        qrOptions: {
+            errorCorrectionLevel: model.errorCorrectionLevel
+        },
+        imageOptions: {
+            imageSize: model.logoOptions?.size ? model.logoOptions?.size / 100 : undefined,
+            margin: model.logoOptions?.margin,
+            hideBackgroundDots: model.logoOptions?.hideBackgroundDots,
+        },
+        backgroundOptions: {
+            round: model.backgroundOptions?.round ? (model.backgroundOptions?.round / 100) : undefined,
+            ...(model.backgroundOptions?.color?.isCustom
+                ? transformColor(model.backgroundOptions?.color?.content)
+                : {
+                    color: "#fff",
+                    gradient: undefined
+                })
+        },
         dotsOptions: {
             type: model.dotsOptions?.type,
             ...transformColor(model.dotsOptions?.color)
@@ -154,7 +189,7 @@ const modelToQrcodeOptions = (model: Model): Options => {
         cornersDotOptions: {
             type: model.cornersOptions?.type === "none" ? undefined : model.cornersOptions?.type,
             ...(model.cornersOptions?.color?.isCustom
-                ? transformColor(model.cornersOptions?.color?.value)
+                ? transformColor(model.cornersOptions?.color?.content)
                 : {
                     color: undefined,
                     gradient: undefined
@@ -163,7 +198,7 @@ const modelToQrcodeOptions = (model: Model): Options => {
         cornersSquareOptions: {
             type: model?.cornersSquareOptions?.type === "none" ? undefined : model?.cornersSquareOptions?.type,
             ...(model?.cornersSquareOptions?.color?.isCustom
-                ? transformColor(model?.cornersSquareOptions?.color?.value)
+                ? transformColor(model?.cornersSquareOptions?.color?.content)
                 : {
                     color: undefined,
                     gradient: undefined
@@ -177,29 +212,13 @@ const model = reactive<Model>({
     width: 200,
     height: 200,
     margin: 10,
+    errorCorrectionLevel: "Q",
+    logoOptions: undefined,
+    backgroundOptions: undefined,
     dotsOptions: undefined,
     cornersOptions: undefined,
-    cornersSquareOptions: undefined
+    cornersSquareOptions: undefined,
 })
-
-const iconFileList = ref<UploadFileInfo[]>([])
-const toBase64 = (file: File) => new Promise<string | null>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string | null);
-    reader.onerror = reject;
-});
-
-
-watch(iconFileList, async () => {
-    const file = iconFileList.value[0]?.file
-    let text = ""
-    if (file) {
-        text = await toBase64(file) || ""
-    }
-    console.log({ text })
-    model.image = text
-}, { immediate: true })
 
 const qrCode = new QRCodeStyling();
 const qrCodeRef = ref<HTMLDivElement | null>(null)
@@ -231,17 +250,18 @@ watch(model, async () => {
 
 const rules: FormRules = {}
 
-const downloadFileTypeOptionsMap: Record<FileExtension, SelectOption> = {
+const errorCorrectionLevelOptions = defineSelectOptionList<Record<ErrorCorrectionLevel, unknown>>({
+    L: { label: "L 可遮挡 7%" },
+    M: { label: "M 可遮挡 15%" },
+    Q: { label: "Q 可遮挡 25%" },
+    H: { label: "H 可遮挡 30%" },
+})
+
+const downloadFileTypeOptions = defineSelectOptionList<Record<FileExtension, unknown>>({
     svg: { label: "svg" },
     png: { label: "png" },
     jpeg: { label: "jpeg" },
     webp: { label: "webp" }
-}
-const downloadFileTypeOptions: SelectOption[] = Object.entries(downloadFileTypeOptionsMap).map(([value, option]) => {
-    return {
-        key: value,
-        ...option
-    }
 })
 
 const handleDownload = async (val: FileExtension) => {

@@ -1,3 +1,5 @@
+import type { SelectOption } from "naive-ui";
+
 export const arraify = <T>(target: T | T[]): T[] => {
   return Array.isArray(target) ? target : [target];
 };
@@ -27,3 +29,14 @@ export const jsonParseSafely = <T>(str?: string | null): T | undefined => {
   return res;
 };
 export * from "./tool-category";
+export const defineSelectOptionList = <T extends object>(obj: {
+  [key in keyof T]: SelectOption;
+}): SelectOption[] => {
+  return Object.entries(obj).map(([key, option]) => {
+    return {
+      key,
+      value: key,
+      ...(option as any),
+    };
+  });
+};

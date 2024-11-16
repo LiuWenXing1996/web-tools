@@ -6,7 +6,7 @@
         <n-form-item path="color.isCustom" first label="自定义颜色">
             <n-switch v-model:value="model.color.isCustom" />
         </n-form-item>
-        <tools-qrcode-generator-color-form ref="color" v-if="model.color.isCustom" />
+        <tools-qrcode-generator-color-form ref="color" v-show="model.color.isCustom" />
     </n-form>
 </template>
 <script lang="ts">
@@ -14,12 +14,12 @@ export type Model = {
     type: CornerDotType | "none",
     color: {
         isCustom: boolean,
-        value: ColorFormModel | undefined
+        content: ColorFormModel | undefined
     }
 }
 </script>
 <script setup lang="ts">
-import type { FormInst, FormRules, SelectOption } from 'naive-ui';
+import type { FormInst, FormRules } from 'naive-ui';
 import type { CornerDotType } from 'qr-code-styling';
 import type { Model as ColorFormModel } from "./color-form.vue"
 
@@ -30,26 +30,19 @@ const model = reactive<Model>({
     type: "none",
     color: {
         isCustom: false,
-        value: undefined
+        content: undefined
     }
 })
 const rules: FormRules = {}
 
-const typeSelectOptionsMap: Record<Model["type"], SelectOption> = {
+const typeSelectOptions = defineSelectOptionList<Record<Model["type"], unknown>>({
     dot: { label: "点" },
     square: { label: "方块" },
     none: { label: "和信息点保持一致" },
-}
-
-const typeSelectOptions: SelectOption[] = Object.entries(typeSelectOptionsMap).map(([value, option]) => {
-    return {
-        value,
-        ...option
-    }
 })
 
 watch(() => colorRef.value?.model, (val) => {
-    model.color.value = val
+    model.color.content = val
 })
 
 defineExpose({

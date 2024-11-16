@@ -13,13 +13,12 @@ export type Model = {
 }
 </script>
 <script setup lang="ts">
-import type { FormInst, FormRules, SelectOption } from 'naive-ui';
+import type { FormInst, FormRules } from 'naive-ui';
 import type { DotType } from 'qr-code-styling';
 import type { Model as ColorFormModel } from "./color-form.vue"
 
 const colorRef = useTemplateRef('color');
 const formRef = ref<FormInst | null>(null)
-
 
 const model = reactive<Model>({
     type: "square",
@@ -27,19 +26,13 @@ const model = reactive<Model>({
 })
 const rules: FormRules = {}
 
-const typeSelectOptionsMap: Record<DotType, SelectOption> = {
+const typeSelectOptions = defineSelectOptionList<Record<DotType, unknown>>({
     dots: { label: "点集" },
     rounded: { label: "圆角 1" },
     'extra-rounded': { label: "圆角 2" },
     classy: { label: "对角圆角 1" },
     'classy-rounded': { label: "对角圆角 2" },
     square: { label: "方块" },
-}
-const typeSelectOptions: SelectOption[] = Object.entries(typeSelectOptionsMap).map(([value, option]) => {
-    return {
-        value,
-        ...option
-    }
 })
 
 watch(() => colorRef.value?.model, (val) => {
