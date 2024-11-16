@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.14",
-    "@iconify/json": "^2.2.266",
     "@nuxtjs/color-mode": "^3.5.2",
     "@vueuse/core": "^11.2.0",
     "@vueuse/nuxt": "^11.2.0",
