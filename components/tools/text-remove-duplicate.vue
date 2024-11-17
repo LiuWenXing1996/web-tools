@@ -33,6 +33,27 @@
 import type { FormInst, FormRules } from 'naive-ui';
 import copy from 'copy-to-clipboard';
 
+defineOptions({
+    toolMeta: defineToolMeta({
+        title: '文本去重',
+        description: "文本去重",
+        category: ToolCategory.text,
+        related: [
+            {
+                title: "帮小忙 - 文本去重",
+                url: "https://tool.browser.qq.com/unique.html"
+            },
+            {
+                title: "即时工具 - 删除重复行",
+                url: "https://www.67tool.com/text/delete-duplicate-lines"
+            }, {
+                title: "Tools-Web - 文本去重",
+                url: "https://tools.ranblogs.com/textremoveduplicate/"
+            }
+        ]
+    })
+})
+
 const message = useMessage()
 const initialText = `移除重复行
 重复行
@@ -80,25 +101,4 @@ const rules: FormRules = {
         }
     ]
 }
-
-defineOptions({
-    toolMeta: defineToolMeta({
-        title: '文本去重',
-        description: "文本去重",
-        category: ToolCategory.text,
-        related: [
-            {
-                title: "帮小忙 - 文本去重",
-                url: "https://tool.browser.qq.com/unique.html"
-            },
-            {
-                title: "即时工具 - 删除重复行",
-                url: "https://www.67tool.com/text/delete-duplicate-lines"
-            }, {
-                title: "Tools-Web - 文本去重",
-                url: "https://tools.ranblogs.com/textremoveduplicate/"
-            }
-        ]
-    })
-})
 </script>
