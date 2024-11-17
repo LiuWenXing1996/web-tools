@@ -239,10 +239,6 @@ watch(model, async () => {
     }
 
     const qrCodeOptions = modelToQrcodeOptions(model)
-    console.log({
-        model: JSON.parse(JSON.stringify(model)),
-        qrCodeOptions
-    })
     qrCode.update(qrCodeOptions)
 }, {
     immediate: true

@@ -1,51 +1,67 @@
 <template>
     <div class="size-full bg-secondary p-[10px] rounded-[12px] border">
-        <div class="relative size-full  ">
+        <div class="relative size-full ">
             <div class="absolute top-0 bottom-0 left-0 right-0">
-                <div ref="editorContainer" class="size-full"></div>
+                <n-spin :show="monacoLoader.loading.value" size="small" class="size-full" content-class="size-full">
+                    <div ref="editorContainer" class="size-full"></div>
+                </n-spin>
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
 // TODO:使用@monaco-editor/loader 来加载，不然不能中文化
-import * as monaco from 'monaco-editor';
+import type * as monacoType from 'monaco-editor';
 
-const theme = useTheme();
+const monacoLoader = useMonacoLoader();
+monacoLoader.get()
 const editorContainerRef = useTemplateRef("editorContainer");
-let editor: monaco.editor.IStandaloneDiffEditor | null = null;
+let editor: monacoType.editor.IStandaloneDiffEditor | null = null;
 
-watch(theme.isDark, (val) => {
-    if (val) {
-        monaco.editor.setTheme("vs-dark")
-    } else {
-        monaco.editor.setTheme("vs")
-    }
-}, { immediate: true })
+const keepSomeActions = (editor: monacoType.editor.IStandaloneCodeEditor) => {
+    const keepIds = [
+        "editor.action.clipboardCutAction",
+        "editor.action.clipboardCopyAction",
+        "editor.action.clipboardPasteAction",
+    ];
+    const contextmenu = editor.getContribution('editor.contrib.contextmenu');
+    // @ts-ignore
+    const realMethod = contextmenu?._getMenuActions || [];
+    // @ts-ignore
+    contextmenu._getMenuActions = function () {
+        const items = realMethod.apply(contextmenu, arguments);
+        return items.filter(function (item: any) {
+            return keepIds.includes(item.id);
+        });
+    };
+}
 
-onMounted(() => {
-    if (!editorContainerRef.value) {
-        return;
-    }
+watch([
+    () => monacoLoader.lib.value,
+    () => editorContainerRef.value
+], ([monaco, editorContainer]) => {
 
-    editor = monaco.editor.createDiffEditor(editorContainerRef.value, {
-        originalEditable: true,
-        useInlineViewWhenSpaceIsLimited: false,
-        minimap: {
-            enabled: false,
-        },
-        // contextmenu:false
-    });
-
-    editor.setModel({
-        original: monaco.editor.createModel(`文本
+    if (monaco && editorContainer) {
+        editor = monaco.editor.createDiffEditor(editorContainer, {
+            originalEditable: true,
+            useInlineViewWhenSpaceIsLimited: false,
+            minimap: {
+                enabled: false,
+            },
+        });
+        keepSomeActions(editor.getOriginalEditor())
+        keepSomeActions(editor.getModifiedEditor())
+        editor.setModel({
+            original: monaco.editor.createModel(`文本
 对比 
 123`, 'txt'),
-        modified: monaco.editor.createModel(`文本
+            modified: monaco.editor.createModel(`文本
 比对
 321`, 'txt'),
-    });
-});
+        });
+    }
+})
+
 useResizeObserver(editorContainerRef, async (entries) => {
     const entry = entries[0]
     const { width, height } = entry.contentRect;
