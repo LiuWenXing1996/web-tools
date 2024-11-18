@@ -77,7 +77,7 @@
     </tool-item-wrapper>
 </template>
 <script setup lang="ts">
-import type { FormInst, FormRules, SelectOption, UploadFileInfo } from 'naive-ui';
+import type { FormInst, FormRules } from 'naive-ui';
 import QRCodeStyling, { type ErrorCorrectionLevel, type FileExtension, type Gradient, type Options } from 'qr-code-styling';
 import type { Model as DotsOptionsFormModel } from "./dots-options-form.vue"
 import type { Model as CornersOptionsFormModel } from "./corners-options-form.vue"

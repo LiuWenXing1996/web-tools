@@ -1,0 +1,100 @@
+<template>
+    <div class="size-full flex flex-col md:flex-row ">
+        <div class="w-full h-[50%] mb-[5px]  md:w-[50%] md:h-full md:mr-[5px] md:mb-[0px] rounded-[12px] border">
+            <custom-scrollbar>
+                <div class="pr-[10px]">
+                    <slot name="input"></slot>
+                    <tool-item-input-fieldset v-if="toolRelated.length > 0">
+                        <template #label>相关工具</template>
+                        <n-space>
+                            <n-tag size="small" v-for="item in toolRelated" class=" cursor-pointer hover:text-primary"
+                                @click="() => handleToolRelatedItemClick(item)">
+                                {{
+                                    item.title
+                                }}
+                            </n-tag>
+                        </n-space>
+                    </tool-item-input-fieldset>
+                </div>
+            </custom-scrollbar>
+        </div>
+        <div class="w-full h-[50%] mt-[5px] md:w-[50%] md:h-full md:ml-[5px] md:mt-[0px] rounded-[12px] border">
+            <div class="size-full flex flex-col p-[10px]">
+                <div class="grow">
+                    <tool-item-input-fieldset class="size-full">
+                        <template #label>结果</template>
+                        <slot name="output"></slot>
+                    </tool-item-input-fieldset>
+                </div>
+                <div class="mt-[10px]" v-if="slots.actions">
+                    <tool-item-input-fieldset>
+                        <template #label>操作</template>
+                        <slot name="actions"></slot>
+                    </tool-item-input-fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script setup lang="ts">
+import { isString } from 'radash';
+
+const slots = defineSlots<{
+    input(): any
+    output(): any
+    actions?: () => any
+}>()
+const editTabs = useEditTabs()
+const toolRenderInjectHelper = useToolRenderInjectHelper();
+const name = toolRenderInjectHelper.inject()
+const tool = computed(() => {
+    return findTool(name?.value || "")
+});
+
+enum ToolRelatedType {
+    tool = "tool",
+    external = "external"
+}
+
+type ToolRelatedItem = {
+    type: ToolRelatedType;
+    title: string;
+    target: string;
+}
+
+const toolRelated: ComputedRef<ToolRelatedItem[]> = computed(() => {
+    const related = tool.value?.meta?.related || []
+    const res = filterNullable(related.map(r => {
+        if (isString(r)) {
+            const tool = findTool(r)
+            if (tool) {
+                return {
+                    type: ToolRelatedType.tool,
+                    title: tool.meta?.title || tool.name,
+                    target: tool.name
+                }
+            }
+        } else {
+            return {
+                type: ToolRelatedType.external,
+                title: r.title,
+                target: r.url
+            }
+        }
+    }))
+    return res
+})
+const handleToolRelatedItemClick = async (item: ToolRelatedItem) => {
+    if (item.type === ToolRelatedType.tool) {
+        editTabs.addTab(item.target)
+    }
+    if (item.type === ToolRelatedType.external) {
+        await navigateTo(item.target, {
+            external: true,
+            open: {
+                target: '_blank'
+            }
+        })
+    }
+}
+</script>
