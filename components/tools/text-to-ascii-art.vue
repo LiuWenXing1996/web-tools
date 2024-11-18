@@ -23,7 +23,7 @@
                         配置
                     </template>
                     <n-form-item path="font" first label="字体">
-                        <n-select v-model:value="model.font" :options="fontSelectOptions" />
+                        <n-select filterable v-model:value="model.font" :options="fontSelectOptions" />
                     </n-form-item>
                     <n-form-item path="width" first label="宽度">
                         <n-input-number v-model:value="model.width" />
