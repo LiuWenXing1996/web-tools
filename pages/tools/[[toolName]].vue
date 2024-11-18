@@ -22,7 +22,7 @@
                 <div class="h-full w-[50px] flex flex-col border-r py-[8px]">
                     <div v-for="opt in sideBarOptions"
                         :class="`w-[full] last:mb-0 mb-[4px] items-center justify-center flex`">
-                        <n-popselect v-model:value="editTabs.currentTabName.value" :options="opt.list" size="medium"
+                        <n-popselect :show-checkmark="false" v-model:value="editTabs.currentTabName.value" :options="opt.list" size="medium"
                             scrollable placement='right-start' @update:value="(v) => {
                                 editTabs.addTab(v)
                             }">
