@@ -9,3 +9,4 @@
 - [ ] 实现中文乱文假数生成器和英文版的Lorem ipsum生成器
 - [ ] 常用英文单词查询？
 - [ ] monaco loader 在不翻墙的情况下加载巨慢
+- [ ] numeronym 数字名称生成器 https://www.aiotools.top/numeronym-generator

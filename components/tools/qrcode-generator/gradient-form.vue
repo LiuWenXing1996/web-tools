@@ -9,19 +9,11 @@
             </n-radio-group>
         </n-form-item>
         <div class="custom-n-form-item">
-            <n-form-item>
+            <n-form-item :label-props="{ for: 'none' }">
                 <template #label>
                     <div class="flex items-center relative">
                         <span>渐变颜色列表</span>
                         <div class="absolute -right-[30px]">
-                            <!-- <svg-icon name="material-symbols:add"  @click="(e) => {
-                                                e.stopPropagation()
-                                                model.colorStops.push({
-                                                    offset: 100,
-                                                    color: '#000'
-                                                })
-                                            }"></svg-icon> -->
-                            <!-- FIXME:按钮触发范围过大 -->
                             <n-button strong secondary circle size="tiny" @click="(e) => {
                                 model.colorStops.push({
                                     offset: 100,
