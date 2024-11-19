@@ -1,5 +1,5 @@
 <template>
-    <tool-item-wrapper-2>
+    <tool-item-wrapper>
         <template #input>
             <n-form :model="model" require-mark-placement="left">
                 <tool-item-input-fieldset>
@@ -151,7 +151,7 @@
                 <n-button size="small" @click="handleCopy">复制</n-button>
             </n-space>
         </template>
-    </tool-item-wrapper-2>
+    </tool-item-wrapper>
 </template>
 <script lang="ts">
 export type Model = {

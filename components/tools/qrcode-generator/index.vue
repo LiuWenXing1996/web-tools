@@ -67,12 +67,23 @@
             </n-form>
         </template>
         <template #output>
-            <div ref="qrCodeRef"></div>
-            <n-dropdown trigger="click" :options="downloadFileTypeOptions" @select="handleDownload">
-                <n-button secondary type="primary" class="mt-[10px]">
-                    下载二维码
-                </n-button>
-            </n-dropdown>
+            <div v-show="isShowScale.content.value" class="absolute top-0 right-[10px] z-10">
+                <n-tag>放缩比: {{ scale.toFixed(1) }}</n-tag>
+            </div>
+            <div :style="{ zoom: scale }">
+                <div ref="qrCodeRef"></div>
+            </div>
+        </template>
+        <template #actions>
+            <n-space>
+                <n-dropdown trigger="click" :options="downloadFileTypeOptions" @select="handleDownload">
+                    <n-button size="small">
+                        下载二维码
+                    </n-button>
+                </n-dropdown>
+                <n-button size="small" @click="scaleAdd">放大</n-button>
+                <n-button size="small" @click="scaleSub">缩小</n-button>
+            </n-space>
         </template>
     </tool-item-wrapper>
 </template>
@@ -103,6 +114,22 @@ defineOptions({
         ]
     })
 })
+const isShowScale = useAutoBoolean()
+const scale = ref(1)
+const scaleAdd = () => {
+    scale.value = scale.value + 0.1;
+    isShowScale.toggle();
+}
+
+const scaleSub = () => {
+    const newVal = scale.value - 0.1;
+    if (newVal <= 0.1) {
+        scale.value = 0.1
+    } else {
+        scale.value = newVal
+    }
+    isShowScale.toggle();
+}
 const initialText = '二维码生成';
 const dotsOptionsRef = useTemplateRef('dotsOptions');
 const cornersOptionsRef = useTemplateRef('cornersOptions');

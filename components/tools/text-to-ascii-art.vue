@@ -1,5 +1,5 @@
 <template>
-    <tool-item-wrapper-2>
+    <tool-item-wrapper>
         <template #input>
             <n-form :model="model" require-mark-placement="left">
                 <tool-item-input-fieldset>
@@ -32,21 +32,12 @@
             </n-form>
         </template>
         <template #output>
-            <div class="size-full relative">
-                <div v-show="isShowScale.content.value" class="absolute top-0 right-0 z-10">
-                    <n-tag>放缩比: {{ scale.toFixed(1) }}</n-tag>
-                </div>
-                <n-spin :show="textResLoading" size="small" class="size-full" content-class="size-full">
-                    <custom-scrollbar>
-                        <div :style="{ zoom: scale }">
-                            <pre><code>{{ textRes }}</code></pre>
-                        </div>
-
-                    </custom-scrollbar>
-                </n-spin>
-
+            <div v-show="isShowScale.content.value" class="absolute top-0 right-[10px] z-10">
+                <n-tag>放缩比: {{ scale.toFixed(1) }}</n-tag>
             </div>
-
+            <div :style="{ zoom: scale }">
+                <pre><code>{{ textRes }}</code></pre>
+            </div>
         </template>
         <template #actions>
             <n-space>
@@ -55,7 +46,7 @@
                 <n-button size="small" :disabled="textResLoading" @click="scaleSub">缩小</n-button>
             </n-space>
         </template>
-    </tool-item-wrapper-2>
+    </tool-item-wrapper>
 </template>
 <script setup lang="ts">
 import type { Fonts } from 'figlet';

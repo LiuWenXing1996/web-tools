@@ -23,9 +23,14 @@
             <div class=" whitespace-pre-wrap">
                 {{ textRes }}
             </div>
-            <n-button secondary type="primary" class="mt-[10px]" @click="handleCopy">
-                复制
-            </n-button>
+
+        </template>
+        <template #actions>
+            <n-space>
+                <n-button @click="handleCopy">
+                    复制
+                </n-button>
+            </n-space>
         </template>
     </tool-item-wrapper>
 </template>

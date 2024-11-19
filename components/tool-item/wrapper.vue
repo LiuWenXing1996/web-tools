@@ -1,35 +1,43 @@
 <template>
     <div class="size-full flex flex-col md:flex-row ">
-        <div class="w-full h-[50%] mb-[5px]  md:w-[50%] md:h-full md:mr-[5px] md:mb-[0px]">
-            <div class="relative h-full rounded-[12px] border">
-                <div class="absolute top-0 bottom-0 left-0 right-0 py-[10px] pl-[10px] custom-n-scrollbar">
-                    <n-scrollbar trigger="none">
-                        <div class="pr-[10px]">
-                            <slot name="input"></slot>
-                            <tool-item-input-fieldset v-if="toolRelated.length > 0">
-                                <template #label>相关工具</template>
-                                <n-space>
-                                    <n-tag size="small" v-for="item in toolRelated" class=" cursor-pointer hover:text-primary"
-                                        @click="() => handleToolRelatedItemClick(item)">
-                                        {{
-                                            item.title
-                                        }}
-                                    </n-tag>
-                                </n-space>
-                            </tool-item-input-fieldset>
-                        </div>
-                    </n-scrollbar>
+        <div
+            class="w-full h-[50%] mb-[5px]  md:w-[50%] md:h-full md:mr-[5px] md:mb-[0px] rounded-[12px] border p-[10px]">
+            <custom-scrollbar out-bar>
+                <div class="relative">
+                    <slot name="input"></slot>
+                    <tool-item-input-fieldset v-if="toolRelated.length > 0">
+                        <template #label>相关工具</template>
+                        <n-space>
+                            <n-tag size="small" v-for="item in toolRelated" class=" cursor-pointer hover:text-primary"
+                                @click="() => handleToolRelatedItemClick(item)">
+                                {{
+                                    item.title
+                                }}
+                            </n-tag>
+                        </n-space>
+                    </tool-item-input-fieldset>
                 </div>
-            </div>
+            </custom-scrollbar>
         </div>
-        <div class="w-full h-[50%] mt-[5px] md:w-[50%] md:h-full md:ml-[5px] md:mt-[0px]">
-            <div class="relative h-full rounded-[12px] border bg-secondary">
-                <div class="absolute top-0 bottom-0 left-0 right-0 py-[10px] pl-[10px] custom-n-scrollbar">
-                    <n-scrollbar trigger="none">
-                        <div class="pr-[10px]">
-                            <slot name="output"></slot>
+        <div class="w-full h-[50%] mt-[5px] md:w-[50%] md:h-full md:ml-[5px] md:mt-[0px] rounded-[12px] border">
+            <div class="size-full flex flex-col p-[10px]">
+                <div class="grow">
+                    <tool-item-input-fieldset class="size-full">
+                        <template #label>结果</template>
+                        <div class="size-full relative">
+                            <custom-scrollbar out-bar>
+                                <div class="min-h-full">
+                                    <slot name="output"></slot>
+                                </div>
+                            </custom-scrollbar>
                         </div>
-                    </n-scrollbar>
+                    </tool-item-input-fieldset>
+                </div>
+                <div class="mt-[10px]" v-if="slots.actions">
+                    <tool-item-input-fieldset>
+                        <template #label>操作</template>
+                        <slot name="actions"></slot>
+                    </tool-item-input-fieldset>
                 </div>
             </div>
         </div>
@@ -38,9 +46,10 @@
 <script setup lang="ts">
 import { isString } from 'radash';
 
-defineSlots<{
+const slots = defineSlots<{
     input(): any
     output(): any
+    actions?: () => any
 }>()
 const editTabs = useEditTabs()
 const toolRenderInjectHelper = useToolRenderInjectHelper();
@@ -96,13 +105,3 @@ const handleToolRelatedItemClick = async (item: ToolRelatedItem) => {
     }
 }
 </script>
-<style lang="less" scoped>
-.custom-n-scrollbar {
-    :deep(> .n-scrollbar) {
-        >.n-scrollbar-rail {
-            right: 2px;
-        }
-    }
-
-}
-</style>
