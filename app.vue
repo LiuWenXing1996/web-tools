@@ -1,5 +1,6 @@
 <template>
-  <n-config-provider inline-theme-disabled :theme="theme.current.value" class="size-full">
+  <n-config-provider :locale="zhCN" :date-locale="dateZhCN" inline-theme-disabled :theme="theme.current.value"
+    class="size-full">
     <n-global-style />
     <global-css-vars />
     <n-dialog-provider>
@@ -11,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import { dateZhCN, zhCN } from 'naive-ui'
 const theme = useTheme()
 </script>
 
