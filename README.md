@@ -10,3 +10,6 @@
 - [ ] 常用英文单词查询？
 - [ ] monaco loader 在不翻墙的情况下加载巨慢
 - [ ] numeronym 数字名称生成器 https://www.aiotools.top/numeronym-generator
+- [ ] 中文转拼音 pinyin-pro
+- [ ] 使用 wrapper2 替换 wrapper 
+- [ ] wrapper 添加【工具描述】
