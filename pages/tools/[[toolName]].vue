@@ -22,8 +22,8 @@
                 <div class="h-full w-[50px] flex flex-col border-r py-[8px]">
                     <div v-for="opt in sideBarOptions"
                         :class="`w-[full] last:mb-0 mb-[4px] items-center justify-center flex`">
-                        <n-popselect :show-checkmark="false" v-model:value="editTabs.currentTabName.value" :options="opt.list" size="medium"
-                            scrollable placement='right-start' @update:value="(v) => {
+                        <n-popselect :show-checkmark="false" v-model:value="editTabs.currentTabName.value"
+                            :options="opt.list" size="medium" scrollable placement='right-start' @update:value="(v) => {
                                 editTabs.addTab(v)
                             }">
                             <template #header>
@@ -69,8 +69,15 @@ const toolName = computed(
 );
 const router = useRouter();
 const home = router.resolve("/")
-const theme = useTheme()
-const editTabs = useEditTabs()
+const editTabs = useEditTabs();
+const title = computed(() => {
+    const mainTitle = "Web-Tools"
+    const tool = findTool(editTabs.currentTabName.value || "")
+    return `${tool?.meta?.title ? `${tool?.meta?.title} - ` : ''}${mainTitle}`
+})
+useHead({
+    title: title
+})
 const allTools = getAllTools();
 const sideBarOptions = Object.entries(ToolCategoryMap).map(([name, meta]) => {
     const list: SelectOption[] = allTools.filter(tool => tool.meta?.category === name).map(tool => {
