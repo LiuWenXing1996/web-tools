@@ -172,7 +172,10 @@ const OpenCC = _OpenCC as any
 defineOptions({
     toolMeta: defineToolMeta({
         title: '中文简体繁体互转',
-        description: "中文简体繁体互转",
+        description: `支持中文简体繁体之间相互转换，
+    - 繁体支持选择使用类型: 中国香港或中国台湾，
+    - 支持自定义字典，方便覆盖一些自动转换程序没有收录到的词
+`,
         category: ToolCategory.text,
         related: [
             {
@@ -204,8 +207,8 @@ const toTypeOptions = defineSelectOptionList<Record<Model['toType'], unknown>>({
 
 const traditionalTypeOptions = defineSelectOptionList<Record<Model['traditionalType'], unknown>>({
     hk: { label: " 繁体（中国香港）" },
-    tw: { label: " 繁体（中国台灣）" },
-    twp: { label: " 繁体（中国台灣）+ 地域短语" }
+    tw: { label: " 繁体（中国台湾）" },
+    twp: { label: " 繁体（中国台湾）+ 地域短语" }
 })
 const textRes = computedAsync(() => {
     let from: any = undefined;

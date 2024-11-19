@@ -4,6 +4,12 @@
             class="w-full h-[50%] mb-[5px]  md:w-[50%] md:h-full md:mr-[5px] md:mb-[0px] rounded-[12px] border p-[10px]">
             <custom-scrollbar out-bar>
                 <div class="relative">
+                    <tool-item-input-fieldset v-if="tool?.meta?.description" class=" mb-[10px]">
+                        <template #label>描述</template>
+                        <div class=" whitespace-pre-wrap">
+                            {{ tool?.meta?.description }}
+                        </div>
+                    </tool-item-input-fieldset>
                     <slot name="input"></slot>
                     <tool-item-input-fieldset v-if="toolRelated.length > 0">
                         <template #label>相关工具</template>

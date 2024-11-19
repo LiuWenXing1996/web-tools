@@ -41,7 +41,7 @@ import copy from 'copy-to-clipboard';
 defineOptions({
     toolMeta: defineToolMeta({
         title: '文本去重',
-        description: "文本去重",
+        description: "支持删除文本中的重复行",
         category: ToolCategory.text,
         related: [
             {

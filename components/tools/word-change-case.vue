@@ -12,20 +12,6 @@
                                 <span>
                                     输入
                                 </span>
-                                <n-tooltip trigger="hover" placement="right-start">
-                                    <template #trigger>
-                                        <svg-icon class="ml-[2px] pb-[5px] text-[12px]"
-                                            name="material-symbols:chat-info" />
-                                    </template>
-                                    <div>
-                                        <div>
-                                            支持输入的格式
-                                        </div>
-                                        <div v-for="m in methods" class="ml-[10px]">
-                                            {{ m.example }}
-                                        </div>
-                                    </div>
-                                </n-tooltip>
                             </div>
                         </template>
                         <n-input clearable placeholder="输入单词" v-model:value="model.text" />
@@ -68,6 +54,26 @@
         </template>
     </tool-item-wrapper>
 </template>
+<script lang="ts">
+export const methods: {
+    name: string,
+    example: string,
+    run: (val: string) => string
+}[] = [
+        { name: "camelCase", example: "twoWords", run: (val) => changeCase.camelCase(val) },
+        { name: "capitalCase", example: "Two Words", run: (val) => changeCase.capitalCase(val) },
+        { name: "constantCase", example: "TWO_WORDS", run: (val) => changeCase.constantCase(val) },
+        { name: "dotCase", example: "two.words", run: (val) => changeCase.dotCase(val) },
+        { name: "kebabCase", example: "two-words", run: (val) => changeCase.kebabCase(val) },
+        { name: "noCase", example: "two words", run: (val) => changeCase.noCase(val) },
+        { name: "pascalCase", example: "TwoWords", run: (val) => changeCase.pascalCase(val) },
+        { name: "pascalSnakeCase", example: "Two_Words", run: (val) => changeCase.pascalSnakeCase(val) },
+        { name: "pathCase", example: "two/words", run: (val) => changeCase.pathCase(val) },
+        { name: "sentenceCase", example: "Two words", run: (val) => changeCase.sentenceCase(val) },
+        { name: "snakeCase", example: "two_words", run: (val) => changeCase.snakeCase(val) },
+        { name: "trainCase", example: "Two-Words", run: (val) => changeCase.trainCase(val) },
+    ]
+</script>
 <script setup lang="ts">
 import type { FormInst, FormRules } from 'naive-ui';
 import * as changeCase from "change-case"
@@ -76,7 +82,11 @@ import copy from 'copy-to-clipboard';
 defineOptions({
     toolMeta: defineToolMeta({
         title: '更改单词格式',
-        description: "更改单词格式",
+        description: `更改单词格式, 支持各种单词格式:
+${methods.map(e => {
+            return `    ${e.example}`
+        }).join(';\n')};
+使用时，随意输入任意格式即可，程序会自动识别，也可以混用格式，例如 t-w-T_S`,
         category: ToolCategory.text
     })
 })
@@ -98,25 +108,6 @@ const finalText = computedAsync(
     },
     initialText,
 )
-
-const methods: {
-    name: string,
-    example: string,
-    run: (val: string) => string
-}[] = [
-        { name: "camelCase", example: "twoWords", run: (val) => changeCase.camelCase(val) },
-        { name: "capitalCase", example: "Two Words", run: (val) => changeCase.capitalCase(val) },
-        { name: "constantCase", example: "TWO_WORDS", run: (val) => changeCase.constantCase(val) },
-        { name: "dotCase", example: "two.words", run: (val) => changeCase.dotCase(val) },
-        { name: "kebabCase", example: "two-words", run: (val) => changeCase.kebabCase(val) },
-        { name: "noCase", example: "two words", run: (val) => changeCase.noCase(val) },
-        { name: "pascalCase", example: "TwoWords", run: (val) => changeCase.pascalCase(val) },
-        { name: "pascalSnakeCase", example: "Two_Words", run: (val) => changeCase.pascalSnakeCase(val) },
-        { name: "pathCase", example: "two/words", run: (val) => changeCase.pathCase(val) },
-        { name: "sentenceCase", example: "Two words", run: (val) => changeCase.sentenceCase(val) },
-        { name: "snakeCase", example: "two_words", run: (val) => changeCase.snakeCase(val) },
-        { name: "trainCase", example: "Two-Words", run: (val) => changeCase.trainCase(val) },
-    ]
 
 const textRes = computed(() => {
     const text = finalText.value || "";
@@ -144,4 +135,5 @@ const handleCopy = (val: string) => {
         message.error("复制失败")
     }
 }
+
 </script>
