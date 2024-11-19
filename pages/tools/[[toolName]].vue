@@ -27,7 +27,7 @@
                                 editTabs.addTab(v)
                             }">
                             <template #header>
-                                {{ opt.title }}
+                                {{ opt.title }}{{ `（${opt.list.length}）` }}
                             </template>
                             <normal-icon :name="opt.icon || ''" :class="[
                                 'cursor-pointer rounded-[6px]',
