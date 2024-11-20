@@ -84,7 +84,8 @@ defineOptions({
         ]
     })
 })
-
+// TODO:支持显示生成结果的统计信息，如段落数，单词数等
+// TODO:支持设置开始句子
 const model = reactive<Model>({
     count: 2,
     format: 'plain',
