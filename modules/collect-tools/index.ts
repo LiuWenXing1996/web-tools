@@ -24,8 +24,10 @@ const listFiles = async (dir?: string) => {
   }
   const fileList = await fs.readdir(dir);
   for (const file of fileList) {
-    const name = path.join(dir, file);
-    files.push(name);
+    if (![".DS_Store"].includes(file)) {
+      const name = path.join(dir, file);
+      files.push(name);
+    }
   }
   return files;
 };

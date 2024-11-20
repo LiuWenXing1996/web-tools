@@ -22,10 +22,10 @@
                         配置
                     </template>
                     <n-form-item path="keepFirst" first label="前置保留数量">
-                        <n-input-number v-model:value="model.keepFirst" />
+                        <n-input-number v-model:value="model.keepFirst" :min="0" />
                     </n-form-item>
                     <n-form-item path="keepLast" first label="后置保留数量">
-                        <n-input-number v-model:value="model.keepLast" />
+                        <n-input-number v-model:value="model.keepLast" :min="0" />
                     </n-form-item>
                     <n-form-item path="keepSpace" first label="保留空格">
                         <n-switch v-model:value="model.keepSpace" />

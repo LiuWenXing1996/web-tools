@@ -7,22 +7,22 @@
                         配置
                     </template>
                     <n-form-item path="count" first label="段落数量">
-                        <n-input-number v-model:value="model.count" />
+                        <n-input-number v-model:value="model.count" :min="1" />
                     </n-form-item>
                     <n-form-item path="paragraphLowerBound" first label="每段句子最少数量">
-                        <n-input-number v-model:value="model.paragraphLowerBound" />
+                        <n-input-number v-model:value="model.paragraphLowerBound" :min="1" />
                     </n-form-item>
                     <n-form-item path="paragraphUpperBound" first label="每段句子最多数量">
-                        <n-input-number v-model:value="model.paragraphUpperBound" />
+                        <n-input-number v-model:value="model.paragraphUpperBound" :min="1" />
                     </n-form-item>
                     <n-form-item path="sentenceLowerBound" first label="每句单词最少数量">
-                        <n-input-number v-model:value="model.sentenceLowerBound" />
+                        <n-input-number v-model:value="model.sentenceLowerBound" :min="1" />
                     </n-form-item>
                     <n-form-item path="sentenceUpperBound" first label="每句单词最多数量">
-                        <n-input-number v-model:value="model.sentenceUpperBound" />
+                        <n-input-number v-model:value="model.sentenceUpperBound" :min="1" />
                     </n-form-item>
                     <n-form-item path="paragraphSpacingLines" first label="段落间换行数量">
-                        <n-input-number v-model:value="model.paragraphSpacingLines" />
+                        <n-input-number v-model:value="model.paragraphSpacingLines" :min="0" />
                     </n-form-item>
                     <n-form-item path="format" first label="输出格式">
                         <n-radio-group v-model:value="model.format">
