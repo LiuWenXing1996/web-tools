@@ -125,14 +125,14 @@ ${toolFileInfoList
   ]);
   await scanFiles();
   nuxt.hook("builder:watch", async (event, path, ...rest) => {
-    console.log({
-      event,
-      path,
-      rest,
-    });
-    console.log(`collect-tools-watch:${path}`);
+    // console.log({
+    //   event,
+    //   path,
+    //   rest,
+    // });
+    // console.log(`collect-tools-watch:${path}`);
     if (path.startsWith(`components/${contentComponentDirName}`)) {
-      console.log(`collect-tools-watch:re scan`);
+      // console.log(`collect-tools-watch:re scan`);
       scanFiles();
     }
   });
