@@ -78,7 +78,7 @@ defineOptions({
         category: ToolCategory.text,
         related: [
             {
-                title: "Lorem ipsum生成器",
+                title: "IT-TOOLS - Lorem ipsum生成器",
                 url: "https://www.aiotools.top/lorem-ipsum-generator"
             }
         ]
