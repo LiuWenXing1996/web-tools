@@ -27,6 +27,7 @@
     "copy-to-clipboard": "^3.3.3",
     "crypto-js": "^4.2.0",
     "figlet": "^1.8.0",
+    "lorem-ipsum": "^2.0.8",
     "monaco-editor": "^0.52.0",
     "naive-ui": "2.38.2",
     "nitropack": "^2.9.7",

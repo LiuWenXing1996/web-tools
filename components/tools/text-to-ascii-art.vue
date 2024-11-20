@@ -16,7 +16,6 @@
                         </template>
                         <n-input clearable placeholder="输入文本" v-model:value="model.text" type="textarea" :rows="8" />
                     </n-form-item>
-
                 </tool-item-input-fieldset>
                 <tool-item-input-fieldset>
                     <template #label>
