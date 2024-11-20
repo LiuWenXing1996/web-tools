@@ -63,6 +63,7 @@ const model = reactive<{
     withUppercase: boolean,
     withLowercase: boolean,
     withNumbers: boolean,
+    // TODO:支持挑选某些特殊字符
     withSymbols: boolean,
 }>({
     length: 64,

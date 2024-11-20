@@ -29,8 +29,8 @@ import type { FormInst, FormRules } from 'naive-ui';
 
 defineOptions({
     toolMeta: defineToolMeta({
-        title: 'css 颜色预览',
-        description: `预览输入的 css 色值, 支持各种合法色值: 
+        title: 'CSS 颜色预览',
+        description: `预览输入的 CSS 色值, 支持各种合法色值: 
     命名颜色: 例如 red, blue;
     十六进制颜色: 例如 #ff0000, #f0f, #ff00ff80;
     RGB 颜色: 例如 rgb(255, 0, 0);
