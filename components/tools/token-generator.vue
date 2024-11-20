@@ -32,6 +32,7 @@
         <template #actions>
             <n-space>
                 <n-button size="small" @click="handleCopy">复制</n-button>
+                <n-button size="small" @click="handleRefresh">重新生成</n-button>
             </n-space>
         </template>
     </tool-item-wrapper>
@@ -43,10 +44,11 @@ defineOptions({
     toolMeta: defineToolMeta({
         title: 'Token 生成器',
         description: `支持使用一下字符生成随机字符串: 
-大写字母;
-小写字母;
-数字;
-符号:  .,;:!?./-"\'#{([-|\\@)]=}*+`,
+    大写字母;
+    小写字母;
+    数字;
+    符号:  .,;:!?./-"\'#{([-|\\@)]=}*+
+`,
         category: ToolCategory.dev,
         related: [
             {
@@ -69,8 +71,13 @@ const model = reactive<{
     withNumbers: true,
     withSymbols: true,
 })
+const refreshTag = ref(false);
+const handleRefresh = () => {
+    refreshTag.value = !refreshTag.value
+}
 
 const textRes = computed(() => {
+    const refreshEmptyStr = refreshTag.value ? "" : ""
     const allAlphabet = [
         model.withUppercase ? 'ABCDEFGHIJKLMOPQRSTUVWXYZ' : '',
         model.withLowercase ? 'abcdefghijklmopqrstuvwxyz' : '',
@@ -79,7 +86,7 @@ const textRes = computed(() => {
     ].join('');
     const length = model.length
     const result = shuffle(allAlphabet.repeat(length).split("")).join("").substring(0, length)
-    return result
+    return result + refreshEmptyStr
 })
 const message = useMessage()
 const handleCopy = () => {
