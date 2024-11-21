@@ -79,8 +79,10 @@ useHead({
     title: title
 })
 const allTools = getAllTools();
-const sideBarOptions = Object.entries(ToolCategoryMap).map(([name, meta]) => {
-    const list: SelectOption[] = allTools.filter(tool => tool.meta?.category === name).map(tool => {
+const sideBarOptions = sortByPinyin(Object.entries(ToolCategoryMap), ([name]) => name).map(([name, meta]) => {
+    const toolList = allTools.filter(tool => tool.meta?.category === name);
+    const toolListSorted = sortByPinyin(toolList, (val) => val.meta?.title || val.name);
+    const list: SelectOption[] = toolListSorted.map(tool => {
         return {
             label: tool.meta?.title || tool.name,
             value: tool.name
