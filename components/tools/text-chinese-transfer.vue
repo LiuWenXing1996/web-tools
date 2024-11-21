@@ -14,7 +14,7 @@
                                 </span>
                             </div>
                         </template>
-                        <n-input clearable placeholder="输入文本" v-model:value="model.text" type="textarea" :rows="8" />
+                        <n-input clearable placeholder="输入文本" v-model:value="model.text" type="textarea" :rows="3" />
                     </n-form-item>
                 </tool-item-input-fieldset>
                 <tool-item-input-fieldset>
@@ -178,6 +178,7 @@ defineOptions({
 `,
         category: ToolCategory.text,
         related: [
+            ToolName['chinese-to-mars'],
             {
                 title: "帮小忙 - 简体繁体转换",
                 url: "https://tool.browser.qq.com/chinese.html"

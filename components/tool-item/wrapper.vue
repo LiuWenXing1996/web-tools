@@ -1,7 +1,7 @@
 <template>
     <div class="size-full flex flex-col md:flex-row ">
         <div
-            class="w-full h-[50%] mb-[5px]  md:w-[50%] md:h-full md:mr-[5px] md:mb-[0px] rounded-[12px] border p-[10px]">
+            class="w-full h-[50%] mb-[5px]  md:w-[50%] md:h-full md:mr-[5px] md:mb-[0px] rounded-[12px] border p-[10px] shadow-md">
             <custom-scrollbar out-bar>
                 <div class="relative">
                     <tool-item-input-fieldset v-if="tool?.meta?.description" class=" mb-[10px]">
@@ -25,7 +25,7 @@
                 </div>
             </custom-scrollbar>
         </div>
-        <div class="w-full h-[50%] mt-[5px] md:w-[50%] md:h-full md:ml-[5px] md:mt-[0px] rounded-[12px] border">
+        <div class="w-full h-[50%] mt-[5px] md:w-[50%] md:h-full md:ml-[5px] md:mt-[0px] rounded-[12px] border shadow-md">
             <div class="size-full flex flex-col p-[10px]">
                 <div class="grow">
                     <tool-item-input-fieldset class="size-full">
@@ -83,7 +83,7 @@ const toolRelated: ComputedRef<ToolRelatedItem[]> = computed(() => {
             if (tool) {
                 return {
                     type: ToolRelatedType.tool,
-                    title: tool.meta?.title || tool.name,
+                    title: `本站 - ${tool.meta?.title || tool.name}`,
                     target: tool.name
                 }
             }
