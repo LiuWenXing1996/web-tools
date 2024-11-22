@@ -7,8 +7,10 @@
                         :class="`w-[50px] h-full items-center justify-center flex border-r hover:text-primary`">
                         <normal-icon name="ri:tools-fill" class="cursor-pointer border rounded-[6px]"></normal-icon>
                     </a>
+                    <div class="ml-[10px]">
+                        <tool-search />
+                    </div>
                 </div>
-
                 <div class="pr-[10px] flex">
                     <theme-button />
                     <a href="https://github.com/LiuWenXing1996/web-tools" target="_blank"
