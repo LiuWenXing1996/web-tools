@@ -1,7 +1,7 @@
 <template>
     <tool-item-wrapper>
         <template #input>
-            <n-form ref="formRef" :model="model" :rules="rules" require-mark-placement="left">
+            <n-form :model="model">
                 <tool-item-input-fieldset>
                     <template #label>
                         文本
@@ -20,22 +20,14 @@
             </n-form>
         </template>
         <template #output>
-            <n-descriptions label-placement="left" :column="1" label-class="w-[145px] inline-flex"
-                content-class="w-[calc(100%-145px)]">
+            <n-descriptions label-placement="left" :column="1" label-class="w-[100px] inline-flex"
+                content-class="w-[calc(100%-100px)]">
                 <n-descriptions-item v-for="text in textRes">
                     <template #label>
                         <div class="inline-flex">
                             <span class="font-medium">
                                 {{ text.name }}
                             </span>
-                            <n-tooltip trigger="hover">
-                                <template #trigger>
-                                    <svg-icon class="ml-[2px] pb-[5px] text-[12px]" name="material-symbols:chat-info" />
-                                </template>
-                                <div>
-                                    {{ `示例: ${text.example}` }}
-                                </div>
-                            </n-tooltip>
                         </div>
                     </template>
                     <div class="inline-flex" v-if="text.result">
@@ -51,6 +43,7 @@
                                 {{ `点击复制` }}
                             </n-tooltip>
                         </span>
+
                     </div>
                 </n-descriptions-item>
             </n-descriptions>
@@ -63,57 +56,39 @@ export const methods: {
     example: string,
     run: (val: string) => string
 }[] = [
-        { name: "camelCase", example: "twoWords", run: (val) => changeCase.camelCase(val) },
-        { name: "capitalCase", example: "Two Words", run: (val) => changeCase.capitalCase(val) },
-        { name: "constantCase", example: "TWO_WORDS", run: (val) => changeCase.constantCase(val) },
-        { name: "dotCase", example: "two.words", run: (val) => changeCase.dotCase(val) },
-        { name: "kebabCase", example: "two-words", run: (val) => changeCase.kebabCase(val) },
-        { name: "noCase", example: "two words", run: (val) => changeCase.noCase(val) },
-        { name: "pascalCase", example: "TwoWords", run: (val) => changeCase.pascalCase(val) },
-        { name: "pascalSnakeCase", example: "Two_Words", run: (val) => changeCase.pascalSnakeCase(val) },
-        { name: "pathCase", example: "two/words", run: (val) => changeCase.pathCase(val) },
-        { name: "sentenceCase", example: "Two words", run: (val) => changeCase.sentenceCase(val) },
-        { name: "snakeCase", example: "two_words", run: (val) => changeCase.snakeCase(val) },
-        { name: "trainCase", example: "Two-Words", run: (val) => changeCase.trainCase(val) },
+        { name: "MD5", example: "", run: (val) => MD5(val).toString() },
+        { name: "RipeMD-160", example: "", run: (val) => RIPEMD160(val).toString() },
+        { name: "SHA-1", example: "", run: (val) => SHA1(val).toString() },
+        { name: "SHA-224", example: "", run: (val) => SHA224(val).toString() },
+        { name: "SHA-256", example: "", run: (val) => SHA256(val).toString() },
+        { name: "SHA-3", example: "", run: (val) => SHA3(val).toString() },
+        { name: "SHA-384", example: "", run: (val) => SHA384(val).toString() },
+        { name: "SHA-512", example: "", run: (val) => SHA512(val).toString() },
     ]
 </script>
 <script setup lang="ts">
 import type { FormInst, FormRules } from 'naive-ui';
-import * as changeCase from "change-case"
+import { MD5, RIPEMD160, SHA1, SHA224, SHA256, SHA3, SHA384, SHA512 } from "crypto-js"
 import copy from 'copy-to-clipboard';
 
 defineOptions({
     toolMeta: defineToolMeta({
-        title: '更改单词格式',
-        description: `更改单词格式, 支持各种单词格式:
+        title: 'Hash 文本',
+        description: `使用各种 Hash 算法处理文本, 支持的算法:
 ${methods.map(e => {
-            return `    ${e.example}`
+            return `    ${e.name}`
         }).join(';\n')};
-使用时，随意输入任意格式即可，程序会自动识别，也可以混用格式，例如 t-w-T_S`,
+`,
         category: ToolCategory.text
     })
 })
-const initialText = 'change-case'
+const initialText = '123456'
 const message = useMessage()
 const model = reactive({
     text: initialText
 })
-const formRef = ref<FormInst | null>(null)
-const finalText = computedAsync(
-    async () => {
-        const text = model.text;
-        try {
-            await formRef.value?.validate() || {}
-        } catch (error) {
-            return
-        }
-        return text
-    },
-    initialText,
-)
-
 const textRes = computed(() => {
-    const text = finalText.value || "";
+    const text = model.text || "";
     return methods.map(m => {
         return {
             ...m,
@@ -121,15 +96,6 @@ const textRes = computed(() => {
         }
     })
 })
-const rules: FormRules = {
-    text: [
-        {
-            required: true,
-            message: '输入单词',
-            trigger: ['input', 'change', 'blur', 'focus']
-        }
-    ]
-}
 const handleCopy = (val: string) => {
     const res = copy(val);
     if (res) {
