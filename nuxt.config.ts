@@ -51,7 +51,7 @@ export default defineNuxtConfig({
       }),
     ],
     ssr: {
-      noExternal: ["naive-ui", "date-fns"],
+      noExternal: ["naive-ui", "date-fns", "crypto-js"],
     },
   },
   pages: true,

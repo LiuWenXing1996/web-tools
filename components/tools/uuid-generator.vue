@@ -51,6 +51,14 @@
     </tool-item-wrapper>
 </template>
 <script lang="ts">
+export type Model = {
+    type: "NIL" | "v1" | "v2" | 'v3' | 'v4',
+    count: number,
+    v1: {
+
+    }
+}
+// TODO:实现 UUID 生成
 export const methods: {
     name: string,
     example: string,
@@ -72,7 +80,7 @@ import copy from 'copy-to-clipboard';
 
 defineOptions({
     toolMeta: defineToolMeta({
-        title: 'Hash 文本',
+        title: 'UUID 生成',
         description: `使用各种 Hash 算法处理文本, 支持的算法:
 ${methods.map(e => {
             return `    ${e.name}`
