@@ -23,6 +23,12 @@ importers:
       '@nuxtjs/color-mode':
         specifier: ^3.5.2
         version: 3.5.2(magicast@0.3.5)(rollup@4.25.0)
+      '@prisma/client':
+        specifier: 5.22.0
+        version: 5.22.0(prisma@5.22.0)
+      '@types/bcrypt':
+        specifier: ^5.0.2
+        version: 5.0.2
       '@types/figlet':
         specifier: ^1.7.0
         version: 1.7.0
@@ -35,6 +41,9 @@ importers:
       '@vueuse/nuxt':
         specifier: ^11.2.0
         version: 11.2.0(magicast@0.3.5)(nuxt@3.14.159(@parcel/watcher@2.5.0)(@types/node@22.9.0)(ioredis@5.4.1)(less@4.2.0)(magicast@0.3.5)(rollup@4.25.0)(terser@5.36.0)(typescript@5.6.3)(vite@5.4.11(@types/node@22.9.0)(less@4.2.0)(terser@5.36.0)))(rollup@4.25.0)(vue@3.5.12(typescript@5.6.3))
+      bcrypt:
+        specifier: ^5.1.1
+        version: 5.1.1
       camelcase:
         specifier: ^8.0.0
         version: 8.0.0
@@ -83,6 +92,9 @@ importers:
       pinyin-pro:
         specifier: ^3.26.0
         version: 3.26.0
+      prisma:
+        specifier: ^5.22.0
+        version: 5.22.0
       qr-code-styling:
         specifier: ^1.8.4
         version: 1.8.4
@@ -146,7 +158,7 @@ importers:
         version: 1.0.0
       prisma-zod-generator:
         specifier: ^0.8.13
-        version: 0.8.13
+        version: 0.8.13(prisma@5.22.0)
       unplugin-auto-import:
         specifier: ^0.18.3
         version: 0.18.3(@nuxt/kit@3.14.159(magicast@0.3.5)(rollup@4.25.0))(@vueuse/core@11.2.0(vue@3.5.12(typescript@5.6.3)))(rollup@4.25.0)
@@ -955,23 +967,47 @@ packages:
       prisma:
         optional: true
 
+  '@prisma/client@5.22.0':
+    resolution: {integrity: sha512-M0SVXfyHnQREBKxCgyo7sffrKttwE6R8PMq330MIUF0pTwjUhLbW84pFDlf06B27XyCR++VtjugEnIHdr07SVA==}
+    engines: {node: '>=16.13'}
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+
   '@prisma/debug@4.16.2':
     resolution: {integrity: sha512-7L7WbG0qNNZYgLpsVB8rCHCXEyHFyIycRlRDNwkVfjQmACC2OW6AWCYCbfdjQhkF/t7+S3njj8wAWAocSs+Brw==}
+
+  '@prisma/debug@5.22.0':
+    resolution: {integrity: sha512-AUt44v3YJeggO2ZU5BkXI7M4hu9BF2zzH2iF2V5pyXT/lRTyWiElZ7It+bRH1EshoMRxHgpYg4VB6rCM+mG5jQ==}
 
   '@prisma/engines-version@4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81':
     resolution: {integrity: sha512-q617EUWfRIDTriWADZ4YiWRZXCa/WuhNgLTVd+HqWLffjMSPzyM5uOWoauX91wvQClSKZU4pzI4JJLQ9Kl62Qg==}
 
+  '@prisma/engines-version@5.22.0-44.605197351a3c8bdd595af2d2a9bc3025bca48ea2':
+    resolution: {integrity: sha512-2PTmxFR2yHW/eB3uqWtcgRcgAbG1rwG9ZriSvQw+nnb7c4uCr3RAcGMb6/zfE88SKlC1Nj2ziUvc96Z379mHgQ==}
+
   '@prisma/engines@4.16.2':
     resolution: {integrity: sha512-vx1nxVvN4QeT/cepQce68deh/Turxy5Mr+4L4zClFuK1GlxN3+ivxfuv+ej/gvidWn1cE1uAhW7ALLNlYbRUAw==}
 
+  '@prisma/engines@5.22.0':
+    resolution: {integrity: sha512-UNjfslWhAt06kVL3CjkuYpHAWSO6L4kDCVPegV6itt7nD1kSJavd3vhgAEhjglLJJKEdJ7oIqDJ+yHk6qO8gPA==}
+
   '@prisma/fetch-engine@4.16.2':
     resolution: {integrity: sha512-lnCnHcOaNn0kw8qTJbVcNhyfIf5Lus2GFXbj3qpkdKEIB9xLgqkkuTP+35q1xFaqwQ0vy4HFpdRUpFP7njE15g==}
+
+  '@prisma/fetch-engine@5.22.0':
+    resolution: {integrity: sha512-bkrD/Mc2fSvkQBV5EpoFcZ87AvOgDxbG99488a5cexp5Ccny+UM6MAe/UFkUC0wLYD9+9befNOqGiIJhhq+HbA==}
 
   '@prisma/generator-helper@4.16.2':
     resolution: {integrity: sha512-bMOH7y73Ui7gpQrioFeavMQA+Tf8ksaVf8Nhs9rQNzuSg8SSV6E9baczob0L5KGZTSgYoqnrRxuo03kVJYrnIg==}
 
   '@prisma/get-platform@4.16.2':
     resolution: {integrity: sha512-fnDey1/iSefHJRMB+w243BhWENf+paRouPMdCqIVqu8dYkR1NqhldblsSUC4Zr2sKS7Ta2sK4OLdt9IH+PZTfw==}
+
+  '@prisma/get-platform@5.22.0':
+    resolution: {integrity: sha512-pHhpQdr1UPFpt+zFfnPazhulaZYCUqeIcPpJViYoq9R+D/yw4fjE+CtnsnKzPYm0ddUbeXUzjGVGIRVgPDCk4Q==}
 
   '@prisma/internals@4.16.2':
     resolution: {integrity: sha512-/3OiSADA3RRgsaeEE+MDsBgL6oAMwddSheXn6wtYGUnjERAV/BmF5bMMLnTykesQqwZ1s8HrISrJ0Vf6cjOxMg==}
@@ -1162,6 +1198,9 @@ packages:
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
+
+  '@types/bcrypt@5.0.2':
+    resolution: {integrity: sha512-6atioO8Y75fNcbmj0G7UjI9lXN2pQ/IGJ2FWT4a/btd0Lk9lQalHLKhkgKVZ3r+spnmWUKfbMi1GEe9wyHQfNQ==}
 
   '@types/conventional-commits-parser@5.0.0':
     resolution: {integrity: sha512-loB369iXNmAZglwWATL+WRe+CRMmmBPtpolYzIebFaX4YA3x+BEfLqhUAV9WanycKI3TG1IMr5bMJDajDKLlUQ==}
@@ -1493,6 +1532,10 @@ packages:
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+
+  bcrypt@5.1.1:
+    resolution: {integrity: sha512-AGBHOG5hPYZ5Xl9KXzU5iKq9516yEmvCKDg3ecP5kX2aB6UqTeXZxk2ELnDgDm6BQSMlLt9rDB4LoSMx0rYwww==}
+    engines: {node: '>= 10.0.0'}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -3096,6 +3139,9 @@ packages:
       xml2js:
         optional: true
 
+  node-addon-api@5.1.0:
+    resolution: {integrity: sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==}
+
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
 
@@ -3655,6 +3701,11 @@ packages:
 
   prisma-zod-generator@0.8.13:
     resolution: {integrity: sha512-X455pyEO2LgEetEiKC5vzasB1+ga58y8ODKbCBJJ5ZK03Gjm5oQedXVa//fu2joXiovHC9YutbT+qLXf0UsLEw==}
+    hasBin: true
+
+  prisma@5.22.0:
+    resolution: {integrity: sha512-vtpjW3XuYCSnMsNVBjLMNkTj6OZbudcPPTPYHqX0CJfpcdWciI1dM8uHETwmDxxiqEwCIE6WvXucWUetJgfu/A==}
+    engines: {node: '>=16.13'}
     hasBin: true
 
   process-nextick-args@2.0.1:
@@ -5639,9 +5690,15 @@ snapshots:
 
   '@polka/url@1.0.0-next.28': {}
 
-  '@prisma/client@4.16.2':
+  '@prisma/client@4.16.2(prisma@5.22.0)':
     dependencies:
       '@prisma/engines-version': 4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81
+    optionalDependencies:
+      prisma: 5.22.0
+
+  '@prisma/client@5.22.0(prisma@5.22.0)':
+    optionalDependencies:
+      prisma: 5.22.0
 
   '@prisma/debug@4.16.2':
     dependencies:
@@ -5651,9 +5708,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@prisma/debug@5.22.0': {}
+
   '@prisma/engines-version@4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81': {}
 
+  '@prisma/engines-version@5.22.0-44.605197351a3c8bdd595af2d2a9bc3025bca48ea2': {}
+
   '@prisma/engines@4.16.2': {}
+
+  '@prisma/engines@5.22.0':
+    dependencies:
+      '@prisma/debug': 5.22.0
+      '@prisma/engines-version': 5.22.0-44.605197351a3c8bdd595af2d2a9bc3025bca48ea2
+      '@prisma/fetch-engine': 5.22.0
+      '@prisma/get-platform': 5.22.0
 
   '@prisma/fetch-engine@4.16.2':
     dependencies:
@@ -5678,6 +5746,12 @@ snapshots:
       - encoding
       - supports-color
 
+  '@prisma/fetch-engine@5.22.0':
+    dependencies:
+      '@prisma/debug': 5.22.0
+      '@prisma/engines-version': 5.22.0-44.605197351a3c8bdd595af2d2a9bc3025bca48ea2
+      '@prisma/get-platform': 5.22.0
+
   '@prisma/generator-helper@4.16.2':
     dependencies:
       '@prisma/debug': 4.16.2
@@ -5701,6 +5775,10 @@ snapshots:
       ts-pattern: 4.3.0
     transitivePeerDependencies:
       - supports-color
+
+  '@prisma/get-platform@5.22.0':
+    dependencies:
+      '@prisma/debug': 5.22.0
 
   '@prisma/internals@4.16.2':
     dependencies:
@@ -5904,6 +5982,10 @@ snapshots:
   '@sindresorhus/merge-streams@2.3.0': {}
 
   '@trysound/sax@0.2.0': {}
+
+  '@types/bcrypt@5.0.2':
+    dependencies:
+      '@types/node': 22.9.0
 
   '@types/conventional-commits-parser@5.0.0':
     dependencies:
@@ -6358,6 +6440,14 @@ snapshots:
     optional: true
 
   base64-js@1.5.1: {}
+
+  bcrypt@5.1.1:
+    dependencies:
+      '@mapbox/node-pre-gyp': 1.0.11
+      node-addon-api: 5.1.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
 
   binary-extensions@2.3.0: {}
 
@@ -8058,6 +8148,8 @@ snapshots:
       - typescript
       - webpack-sources
 
+  node-addon-api@5.1.0: {}
+
   node-addon-api@7.1.1: {}
 
   node-fetch-native@1.6.4: {}
@@ -8680,9 +8772,9 @@ snapshots:
 
   pretty-bytes@6.1.1: {}
 
-  prisma-zod-generator@0.8.13:
+  prisma-zod-generator@0.8.13(prisma@5.22.0):
     dependencies:
-      '@prisma/client': 4.16.2
+      '@prisma/client': 4.16.2(prisma@5.22.0)
       '@prisma/generator-helper': 4.16.2
       '@prisma/internals': 4.16.2
       prettier: 2.8.8
@@ -8692,6 +8784,12 @@ snapshots:
       - encoding
       - prisma
       - supports-color
+
+  prisma@5.22.0:
+    dependencies:
+      '@prisma/engines': 5.22.0
+    optionalDependencies:
+      fsevents: 2.3.3
 
   process-nextick-args@2.0.1: {}
 

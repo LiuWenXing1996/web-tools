@@ -16,8 +16,9 @@
                     <a href="https://github.com/LiuWenXing1996/web-tools" target="_blank"
                         :class="`h-full items-center justify-center flex pl-[2px]`">
                         <normal-icon name="mdi:github"
-                            class="cursor-pointer  rounded-[6px] hover:bg-hoverColor"></normal-icon>
+                            class="cursor-pointer rounded-[6px] hover:bg-hoverColor"></normal-icon>
                     </a>
+                    <user-avatar />
                 </div>
             </div>
             <div class="h-[calc(100%-50px)] flex">
@@ -33,7 +34,7 @@
                             </template>
                             <normal-icon :name="opt.icon || ''" :class="[
                                 'cursor-pointer rounded-[6px]',
-                                opt.list.find(e => e.value === editTabs.currentTabName.value) ? 'bg-primaryActiveBg text-primary' : 'hover:bg-hoverColor'
+                                (opt.list.find(e => e.value === editTabs.currentTabName.value) && !(opt.disableActive)) ? 'bg-primaryActiveBg text-primary' : 'hover:bg-hoverColor'
                             ]"></normal-icon>
                         </n-popselect>
                     </div>
@@ -65,6 +66,7 @@
 <script setup lang="ts">
 import type { SelectOption } from 'naive-ui';
 import { first } from 'radash';
+import { ToolCategory } from '~/utils';
 const route = useRoute();
 const toolName = computed(
     () => first(arraify(route.params.toolName)) || undefined
@@ -72,6 +74,8 @@ const toolName = computed(
 const router = useRouter();
 const home = router.resolve("/")
 const editTabs = useEditTabs();
+const message = useMessage();
+const user = useCurrentUser()
 const title = computed(() => {
     const mainTitle = "Web-Tools"
     const tool = findTool(editTabs.currentTabName.value || "")
@@ -81,7 +85,42 @@ useHead({
     title: title
 })
 const allTools = getAllTools();
-const sideBarOptions = sortByPinyin(Object.entries(ToolCategoryMap), ([name]) => name).map(([name, meta]) => {
+const sideBarOptions = computed(() => {
+    const setting = user.setting.value;
+    const tools = setting?.sideBar?.tools || {};
+    const toolList = allTools.filter(tool => tools[tool.name]);
+    const toolListSorted = sortByPinyin(toolList, (val) => val.meta?.title || val.name);
+    const list: SelectOption[] = toolListSorted.map(tool => {
+        return {
+            label: tool.meta?.title || tool.name,
+            value: tool.name
+        }
+    })
+    const isAdmin = user.current.value?.isAdmin || user.current.value?.isSuper
+    return [
+        {
+            name: "user-tools",
+            title: "收藏工具",
+            icon: "material-symbols:collections-bookmark",
+            list,
+            disableActive: true
+        },
+        ...sideBarAllToolsOptions.filter(item => {
+            if (item.name === ToolCategory.admin) {
+                if (!isAdmin) {
+                    return false
+                }
+            }
+            return true
+        }).map(item => {
+            return {
+                ...item,
+                disableActive: false
+            }
+        })
+    ]
+})
+const sideBarAllToolsOptions = sortByPinyin(Object.entries(ToolCategoryMap), ([name]) => name).map(([name, meta]) => {
     const toolList = allTools.filter(tool => tool.meta?.category === name);
     const toolListSorted = sortByPinyin(toolList, (val) => val.meta?.title || val.name);
     const list: SelectOption[] = toolListSorted.map(tool => {

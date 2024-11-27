@@ -3,11 +3,11 @@
     class="size-full">
     <n-global-style />
     <global-css-vars />
-    <n-dialog-provider>
-      <n-message-provider>
+    <n-message-provider>
+      <n-dialog-provider>
         <NuxtPage keepalive />
-      </n-message-provider>
-    </n-dialog-provider>
+      </n-dialog-provider>
+    </n-message-provider>
   </n-config-provider>
 </template>
 
@@ -17,6 +17,11 @@ const theme = useTheme()
 </script>
 
 <style lang="less">
+:root {
+  --bg-light: rgb(255, 255, 255);
+  --bg-dark: rgb(16, 16, 20);
+}
+
 body,
 html {
   margin: 0;
@@ -25,12 +30,12 @@ html {
   width: 100%;
 
   &.dark-mode {
-    background-color: rgb(16, 16, 20);
+    background-color: var(--bg-dark);
     color-scheme: dark;
   }
 
   &.light-mode {
-    background-color: rgb(255, 255, 255);
+    background-color: var(--bg-light);
     color-scheme: light;
   }
 }
