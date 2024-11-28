@@ -36,6 +36,24 @@ export const useEditTabs = () => {
       currentTabName: name,
     };
   };
+  const closeCurrentTab = () => {
+    removeTab(currentTabName.value || "");
+  };
+  const closeOtherTabs = () => {
+    const newOpenedTabNames = openedTabNames.value.filter(
+      (e) => e === currentTabName.value
+    );
+    store.value = {
+      ...store.value,
+      openedTabNames: newOpenedTabNames,
+    };
+  };
+  const closeAllTabs = () => {
+    store.value = {
+      openedTabNames: [],
+      currentTabName: undefined,
+    };
+  };
   watch(
     () => store.value.currentTabName,
     () => {
@@ -52,5 +70,8 @@ export const useEditTabs = () => {
     addTab,
     removeTab,
     activeTab,
+    closeCurrentTab,
+    closeOtherTabs,
+    closeAllTabs,
   };
 };

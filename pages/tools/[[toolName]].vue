@@ -45,6 +45,12 @@
                         }" size="small" type="card" closable @close="(key) => {
                             editTabs.removeTab(key);
                         }" pane-class="size-full !p-[10px]">
+                            <template #suffix>
+                                <div class="mr-[10px]">
+                                    <tool-tabs-actions />
+                                </div>
+
+                            </template>
                             <n-tab-pane :name="item.name" :tab="item.tool?.meta?.title || `工具 ${item.name} 未实现`"
                                 v-for="item in toolTabs" display-directive="show">
                                 <tool-item-render :name="item.name" />
@@ -115,4 +121,6 @@ watch(toolName, () => {
 }, {
     immediate: true
 })
+
+
 </script>
