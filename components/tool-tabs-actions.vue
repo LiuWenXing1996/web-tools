@@ -1,5 +1,5 @@
 <template>
-    <n-dropdown trigger="click" :options="options" @select="handleSelect">
+    <n-dropdown trigger="click" :options="options" @select="handleSelect" placement="bottom-end">
         <div
             class="flex justify-center items-center h-[24px] w-[24px] cursor-pointer  rounded-[6px] hover:bg-hoverColor">
             <svg-icon class="origin-center -rotate-90" size="16"
