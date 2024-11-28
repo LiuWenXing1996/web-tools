@@ -1,7 +1,13 @@
 <template>
-    <div class="size-full flex flex-col md:flex-row ">
-        <div
-            class="w-full h-[50%] mb-[5px]  md:w-[50%] md:h-full md:mr-[5px] md:mb-[0px] rounded-[12px] border p-[10px] shadow-md">
+    <div :class="[
+        'size-full flex flex-col ',
+        vertical ? '' : 'md:flex-row'
+    ]">
+        <div :class="[
+            'w-full h-[50%] mb-[5px] rounded-[12px] border p-[10px]  ',
+            vertical ? '' : 'md:w-[50%] md:h-full md:mr-[5px] md:mb-[0px]',
+            verticalTopClass
+        ]">
             <custom-scrollbar out-bar>
                 <div class="relative">
                     <tool-item-input-fieldset v-if="tool?.meta?.description" class=" mb-[10px]">
@@ -25,17 +31,26 @@
                 </div>
             </custom-scrollbar>
         </div>
-        <div class="w-full h-[50%] mt-[5px] md:w-[50%] md:h-full md:ml-[5px] md:mt-[0px] rounded-[12px] border shadow-md">
+        <div :class="[
+            'w-full h-[50%] mt-[5px]  rounded-[12px] border ',
+            vertical ? '' : 'md:w-[50%] md:h-full md:ml-[5px] md:mt-[0px]',
+            verticalBottomClass
+        ]">
             <div class="size-full flex flex-col p-[10px]">
                 <div class="grow">
                     <tool-item-input-fieldset class="size-full">
-                        <template #label>结果</template>
+                        <template #label>{{ outputLabel ? outputLabel : '结果' }}</template>
                         <div class="size-full relative">
-                            <custom-scrollbar out-bar>
-                                <div class="min-h-full">
-                                    <slot name="output"></slot>
-                                </div>
-                            </custom-scrollbar>
+                            <template v-if="outputAutoScrollDisabled">
+                                <slot name="output"></slot>
+                            </template>
+                            <template v-else>
+                                <custom-scrollbar out-bar>
+                                    <div class="min-h-full">
+                                        <slot name="output"></slot>
+                                    </div>
+                                </custom-scrollbar>
+                            </template>
                         </div>
                     </tool-item-input-fieldset>
                 </div>
@@ -51,7 +66,13 @@
 </template>
 <script setup lang="ts">
 import { isString } from 'radash';
-
+const props = defineProps<{
+    vertical?: boolean,
+    verticalTopClass?: string,
+    verticalBottomClass?: string,
+    outputLabel?: string,
+    outputAutoScrollDisabled?: boolean
+}>()
 const slots = defineSlots<{
     input(): any
     output(): any

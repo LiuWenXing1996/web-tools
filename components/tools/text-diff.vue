@@ -1,13 +1,16 @@
 <template>
-    <div class="size-full bg-secondary p-[10px] rounded-[12px] border">
-        <div class="relative size-full ">
-            <div class="absolute top-0 bottom-0 left-0 right-0">
-                <n-spin :show="monacoLoader.loading.value" size="small" class="size-full" content-class="size-full">
-                    <div ref="editorContainer" class="size-full"></div>
-                </n-spin>
+    <tool-item-wrapper vertical output-label="对比" output-auto-scroll-disabled vertical-top-class="!h-[20%]"
+        vertical-bottom-class="!h-[80%]">
+        <template #output>
+            <div class="relative size-full ">
+                <div class="absolute top-0 bottom-0 left-0 right-0">
+                    <n-spin :show="monacoLoader.loading.value" size="small" class="size-full" content-class="size-full">
+                        <div ref="editorContainer" class="size-full"></div>
+                    </n-spin>
+                </div>
             </div>
-        </div>
-    </div>
+        </template>
+    </tool-item-wrapper>
 </template>
 <script setup lang="ts">
 import type * as monacoType from 'monaco-editor';
